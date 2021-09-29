@@ -1,3 +1,4 @@
+import 'package:chat_app/screens/contacts_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app/screens/welcome_screen.dart';
@@ -17,12 +18,14 @@ class FlashChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: WelcomeScreen.id,
+      //initialRoute: WelcomeScreen.id,
+      initialRoute: ContactsScreen.id,
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ChatScreen.id: (context) => ChatScreen(),
         LoginScreen.id: (context) => const LoginScreen(),
         RegistrationScreen.id: (context) => RegistrationScreen(),
+        ContactsScreen.id: (context) => ContactsScreen(),
       },
     );
   }
