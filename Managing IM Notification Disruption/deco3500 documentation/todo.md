@@ -1,7 +1,6 @@
-- work with team to make a structure for our wiki
-suggested structure:
 
-- ask tutor how to structure repo and wiki and branches and readme's
+
+
 
 - Quick Links
 	1. Exhibition
