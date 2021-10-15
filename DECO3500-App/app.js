@@ -92,3 +92,9 @@ tempElement.addEventListener("click", function(){
     }
 });
 
+//DISPLAYING IDEAS APPROPRIATE TO WEATHER
+//int temperature;
+//if(temperature > 25){
+//    ideaElement.innerHTML = `<img src="icons/Cooking-Appliance-Use.png"/>`;
+
+

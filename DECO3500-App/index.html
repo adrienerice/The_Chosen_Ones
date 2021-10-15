@@ -29,24 +29,58 @@
         </div>
     </div>
     <div class="idea-container">
-        <div class="idea-icon">
-            <img src="icons/Cooking-Appliance-Use.png" alt="">
-        </div>
+        <button id="button1" onclick="myFunction()">Are all household members home?</button>
+        <p id = "demo"></p>
+        <script>
+        function myFunction() {
+        document.getElementById("demo").innerHTML = `<img src="icons/Cooking-Appliance-Use.png"/>`;
+        }
+    </script>
     </div>
     <div class="ideaTwo-container">
-        <img src="icons/Dryer-Use-Image.png" alt="">
+        <button id="button2" onclick="myFunctionTwo()">Is it 25°C or more and is it sunny conditions?</button>
+        <p id = "demoTwo"></p>
+        <script>
+        function myFunctionTwo() {
+        document.getElementById("demoTwo").innerHTML = `<img src="icons/Dryer-Use-Image.png"/>`;
+        }
+    </script>
     </div>
     <div class="ideaThree-container">
-        <img src="icons/Fan-Use.png" alt="">
+        <button id="button3" onclick="myFunctionThree()">Is it 20°C or less?</button>
+        <p id = "demoThree"></p>
+        <script>
+        function myFunctionThree() {
+        document.getElementById("demoThree").innerHTML = `<img src="icons/Fan-Use.png"/>`;
+        }
+    </script>
     </div>
     <div class="ideaFour-container">
-        <img src="icons/Home-Cooling.png" alt="">
+        <button id="button4" onclick="myFunctionFour()">Is it 25°C or less?</button>
+        <p id = "demoFour"></p>
+        <script>
+        function myFunctionFour() {
+        document.getElementById("demoFour").innerHTML = `<img src="icons/Home-Cooling.png"/>`;
+        }
+    </script>
     </div>
     <div class="ideaFive-container">
-        <img src="icons/Light-Use.png" alt="">
+        <button id="button5" onclick="myFunctionFive()">Is there currently sunny conditions?</button>
+        <p id = "demoFive"></p>
+        <script>
+        function myFunctionFive() {
+        document.getElementById("demoFive").innerHTML = `<img src="icons/Light-Use.png"/>`;
+        }
+    </script>
     </div>
     <div class="ideaSix-container">
-        <img src="icons/Water-heating.png" alt="">
+        <button id="button6" onclick="myFunctionSix()">If you used a hot cycle for the washing machine:</button>
+        <p id = "demoSix"></p>
+        <script>
+        function myFunctionSix() {
+        document.getElementById("demoSix").innerHTML = `<img src="icons/Water-Heating.png"/>`;
+        }
+    </script>
     </div>
 
     <script src="app.js"></script>

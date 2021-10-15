@@ -15,6 +15,7 @@ body{
     
     border-radius: 10px;
     padding-bottom : 50px;
+    padding-left: 150px;
 }
 
 .app-title{
@@ -108,12 +109,13 @@ body{
 }
 
 .idea-container {
-    width: 350px;
-    height: 120px;
+    width: 500px;
+    height: 200px;
     display: block;
     margin: 0 left;
     border-radius: 10px;
     padding-bottom : 50px;
+    padding-left: 150px;
 }
 
 /* Resize images */
@@ -123,12 +125,13 @@ body{
 }
 
 .ideaTwo-container {
-    width: 350px;
-    height: 120px;
+    width: 500px;
+    height: 200px;
     display: block;
     margin: 0 left;
     border-radius: 10px;
     padding-bottom : 50px;
+    padding-left: 150px;
 }
 
 /* Resize images */
@@ -138,12 +141,13 @@ body{
 }
 
 .ideaThree-container {
-    width: 350px;
-    height: 120px;
+    width: 500px;
+    height: 200px;
     display: block;
     margin: 0 left;
     border-radius: 10px;
     padding-bottom : 50px;
+    padding-left: 150px;
 }
 
 /* Resize images */
@@ -153,12 +157,13 @@ body{
 }
 
 .ideaFour-container {
-    width: 350px;
-    height: 120px;
+    width: 500px;
+    height: 200px;
     display: block;
     margin: 0 left;
     border-radius: 10px;
     padding-bottom : 50px;
+    padding-left: 150px;
 }
 
 /* Resize images */
@@ -168,12 +173,13 @@ body{
 }
 
 .ideaFive-container {
-    width: 350px;
-    height: 120px;
+    width: 500px;
+    height: 200px;
     display: block;
     margin: 0 left;
     border-radius: 10px;
     padding-bottom : 50px;
+    padding-left: 150px;
 }
 
 /* Resize images */
@@ -183,16 +189,118 @@ body{
 }
 
 .ideaSix-container {
-    width: 350px;
-    height: 120px;
+    width: 500px;
+    height: 200px;
     display: block;
     margin: 0 left;
     border-radius: 10px;
     padding-bottom : 50px;
+    padding-left: 150px;
 }
 
 /* Resize images */
 .ideaSix-container img {
     width: 100%;
     height: auto;
+}
+
+#button1 {
+    color: #721c24;
+    font-size: 1.2em;
+    margin: 0;
+    text-align: center;
+    padding: 10px 60px;
+
+}
+
+#button2 {
+    color: #721c24;
+    font-size: 1.2em;
+    margin: 0;
+    text-align: center;
+    padding: 10px 30px;
+
+}
+
+#button3 {
+    color: #721c24;
+    font-size: 1.2em;
+    margin: 0;
+    text-align: center;
+    padding: 10px 150px;
+
+}
+
+#button4 {
+    color: #721c24;
+    font-size: 1.2em;
+    margin: 0;
+    text-align: center;
+    padding: 10px 160px;
+}
+
+#button5 {
+    color: #721c24;
+    font-size: 1.2em;
+    margin: 0;
+    text-align: center;
+    padding: 10px 80px
+
+}
+
+#button6 {
+    color: #721c24;
+    font-size: 1.2em;
+    margin: 0;
+    text-align: center;
+    padding: 10px 20px;
+
+}
+
+#demo {
+    color: #721c24;
+    font-size: 1.2em;
+    margin: 0;
+    text-align: right;
+    padding: 10px 100px;
+}
+
+#demoTwo {
+    color: #721c24;
+    font-size: 1.2em;
+    margin: 0;
+    text-align: right;
+    padding: 10px 100px;
+}
+
+#demoThree {
+    color: #721c24;
+    font-size: 1.2em;
+    margin: 0;
+    text-align: right;
+    padding: 10px 100px;
+}
+
+#demoFour {
+    color: #721c24;
+    font-size: 1.2em;
+    margin: 0;
+    text-align: right;
+    padding: 10px 100px;
+}
+
+#demoFive {
+    color: #721c24;
+    font-size: 1.2em;
+    margin: 0;
+    text-align: right;
+    padding: 10px 100px;
+}
+
+#demoSix {
+    color: #721c24;
+    font-size: 1.2em;
+    margin: 0;
+    text-align: right;
+    padding: 10px 100px;
 }
