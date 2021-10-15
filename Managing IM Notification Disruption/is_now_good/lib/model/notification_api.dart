@@ -39,6 +39,7 @@ class NotificationApi {
 
   static Future showNotification(
       {int id = 0, String? title, String? body, String? payload}) async {
+    // TODO muted notification option
     return _notifications.show(
       id,
       title,

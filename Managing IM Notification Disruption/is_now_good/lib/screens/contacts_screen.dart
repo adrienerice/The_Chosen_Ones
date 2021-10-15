@@ -24,7 +24,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   List<String> getContactNames() {
     // TODO get from database
-    return ['Andy Dwyer', 'Ron Swanson', 'Jeff Bezos'];
+    List<String> contacts = ['Andy Dwyer', 'Ron Swanson', 'Jeff Bezos'];
+    // TODO Sort contacts by most recent message (unless they are retrieved like that automatically)
+    contacts.sort();
+    return contacts;
   }
 
   void listenNotifications() =>
@@ -42,7 +45,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
         child: Icon(Icons.add, color: Colors.white),
         onPressed: () {
           NotificationApi.showNotification(
-            title: 'Andrew Dwyer - Is Now Good?',
+            title: 'Andrew Dwyer',
             body: 'How was your trip yesterday?',
             payload: 'Andrey Dwyer',
           );
