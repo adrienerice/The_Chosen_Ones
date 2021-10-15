@@ -7,6 +7,7 @@ const tempElement = document.querySelector(".temperature-value p");
 const descElement = document.querySelector(".temperature-description p");
 const locationElement = document.querySelector(".location p");
 const notificationElement = document.querySelector(".notification");
+const ideaElement = document.querySelector(".idea-container");
 
 // App data
 const weather = {};
@@ -93,8 +94,8 @@ tempElement.addEventListener("click", function(){
 });
 
 //DISPLAYING IDEAS APPROPRIATE TO WEATHER
-//int temperature;
-//if(temperature > 25){
-//    ideaElement.innerHTML = `<img src="icons/Cooking-Appliance-Use.png"/>`;
+if(weather > 25){
+    ideaElement.innerHTML = `<img src="icons/Cooking-Appliance-Use.png"/>`;
+}
 
 
