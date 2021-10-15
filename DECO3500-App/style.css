@@ -3,7 +3,7 @@
 }
 
 body{
-    background-color: #293251;
+    background-color: #FFF;
 }
 
 .container{
@@ -11,7 +11,7 @@ body{
     background-color: #FFF;
     
     display: block;
-    margin: 0 auto;
+    margin: 5 left;
     
     border-radius: 10px;
     padding-bottom : 50px;
@@ -47,7 +47,7 @@ body{
 .weather-container{
     width: 300px;
     height: 260px;
-    background-color: #F4F9FF;
+    background-color: #FFF;
 }
 
 .weather-icon{
@@ -107,5 +107,92 @@ body{
     font-size: 0.8em;
 }
 
+.idea-container {
+    width: 350px;
+    height: 120px;
+    display: block;
+    margin: 0 left;
+    border-radius: 10px;
+    padding-bottom : 50px;
+}
 
+/* Resize images */
+.idea-container img {
+    width: 100%;
+    height: auto;
+}
 
+.ideaTwo-container {
+    width: 350px;
+    height: 120px;
+    display: block;
+    margin: 0 left;
+    border-radius: 10px;
+    padding-bottom : 50px;
+}
+
+/* Resize images */
+.ideaTwo-container img {
+    width: 100%;
+    height: auto;
+}
+
+.ideaThree-container {
+    width: 350px;
+    height: 120px;
+    display: block;
+    margin: 0 left;
+    border-radius: 10px;
+    padding-bottom : 50px;
+}
+
+/* Resize images */
+.ideaThree-container img {
+    width: 100%;
+    height: auto;
+}
+
+.ideaFour-container {
+    width: 350px;
+    height: 120px;
+    display: block;
+    margin: 0 left;
+    border-radius: 10px;
+    padding-bottom : 50px;
+}
+
+/* Resize images */
+.ideaFour-container img {
+    width: 100%;
+    height: auto;
+}
+
+.ideaFive-container {
+    width: 350px;
+    height: 120px;
+    display: block;
+    margin: 0 left;
+    border-radius: 10px;
+    padding-bottom : 50px;
+}
+
+/* Resize images */
+.ideaFive-container img {
+    width: 100%;
+    height: auto;
+}
+
+.ideaSix-container {
+    width: 350px;
+    height: 120px;
+    display: block;
+    margin: 0 left;
+    border-radius: 10px;
+    padding-bottom : 50px;
+}
+
+/* Resize images */
+.ideaSix-container img {
+    width: 100%;
+    height: auto;
+}
