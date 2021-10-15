@@ -20,6 +20,7 @@ class FlashChat extends StatelessWidget {
     return MaterialApp(
       //initialRoute: WelcomeScreen.id,
       initialRoute: ContactsScreen.id,
+      // initialRoute: ChatScreen.id,
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ChatScreen.id: (context) => ChatScreen(),

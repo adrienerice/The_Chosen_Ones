@@ -24,6 +24,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final messageTextController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   String messageText = "";
+  String contactName = '⚡️Chat';
 
   @override
   void initState() {
@@ -59,7 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 Navigator.pop(context);
               }),
         ],
-        title: Text('⚡️Chat'), //TODO contact name
+        title: Text(contactName), //TODO contact name
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: SafeArea(

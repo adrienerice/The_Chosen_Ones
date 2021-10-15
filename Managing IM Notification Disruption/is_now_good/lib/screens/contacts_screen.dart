@@ -1,5 +1,5 @@
-import 'package:chat_app/screens/chat_screen.dart';
-import 'package:chat_app/model/notification_api.dart';
+// import '/screens/chat_screen.dart';
+import '/model/notification_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -12,11 +12,19 @@ class ContactsScreen extends StatefulWidget {
 }
 
 class _ContactsScreenState extends State<ContactsScreen> {
+  List<String> contactNames = [];
+
   @override
   void initState() {
     super.initState();
     NotificationApi.init();
     listenNotifications();
+    contactNames = getContactNames();
+  }
+
+  List<String> getContactNames() {
+    // TODO get from database
+    return ['Andy Dwyer', 'Ron Swanson', 'Jeff Bezos'];
   }
 
   void listenNotifications() =>
@@ -24,7 +32,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   void onClickedNotification(String? payload) {
     //do something with payload.
-    Navigator.pushNamed(context, ChatScreen.id, arguments: payload);
+    // Navigator.pushNamed(context, ChatScreen.id, arguments: payload);
   }
 
   @override
@@ -53,15 +61,15 @@ class _ContactsScreenState extends State<ContactsScreen> {
         title: Text('⚡️ Contacts'),
       ),
       body: ListView.builder(
-        itemCount: 12,
+        itemCount: contactNames.length,
         itemBuilder: (context, index) {
           //TODO add 0 contacts case
           return TextButton(
             onPressed: () {
-              Navigator.pushNamed(
-                context,
-                ChatScreen.id,
-              );
+              // Navigator.pushNamed(
+              //   context,
+              //   ChatScreen.id,
+              // );
             },
             child: ListTile(
               leading: CircleAvatar(
@@ -71,7 +79,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   height: 40,
                 ),
               ),
-              title: Text('Contact Name'),
+              title: Text(contactNames[index]),
               trailing: Icon(Icons.check),
             ),
           );
