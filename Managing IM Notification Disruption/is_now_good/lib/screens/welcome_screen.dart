@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import '/components/rounded_button.dart';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 
+import '/screens/registration_screen.dart';
 import '/screens/login_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -100,7 +102,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               text: 'Register',
               color: Colors.blueAccent,
               onPressed: () {
-                // Navigator.pushNamed(context, RegistrationScreen.id);
+                Navigator.pushNamed(context, RegistrationScreen.id);
               },
             ),
           ],

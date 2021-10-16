@@ -1,4 +1,4 @@
-// import '/screens/chat_screen.dart';
+import '/screens/chat_screen.dart';
 import '/model/notification_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -35,7 +35,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   void onClickedNotification(String? payload) {
     //do something with payload.
-    // Navigator.pushNamed(context, ChatScreen.id, arguments: payload);
+    Navigator.pushNamed(context, ChatScreen.id, arguments: payload);
   }
 
   @override
@@ -47,7 +47,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
           NotificationApi.showNotification(
             title: 'Andrew Dwyer',
             body: 'How was your trip yesterday?',
-            payload: 'Andrey Dwyer',
+            payload: 'you@you.you', //TODO add contact username here
           );
         },
       ),
@@ -69,10 +69,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
           //TODO add 0 contacts case
           return TextButton(
             onPressed: () {
-              // Navigator.pushNamed(
-              //   context,
-              //   ChatScreen.id,
-              // );
+              Navigator.pushNamed(context, ChatScreen.id);
             },
             child: ListTile(
               leading: CircleAvatar(

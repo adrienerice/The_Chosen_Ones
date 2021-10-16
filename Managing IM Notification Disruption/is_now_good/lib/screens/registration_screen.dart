@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:is_now_good/screens/contacts_screen.dart';
-import 'package:load/load.dart';
-import '/constants.dart';
-import '/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:load/load.dart';
+
+import '/components/rounded_button.dart';
+import '/constants.dart';
 import '/screens/chat_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
-  static const String id = 'login_screen';
-
+class RegistrationScreen extends StatefulWidget {
+  static const String id = 'registration_screen';
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
-  String errorMessage = '';
-  late String _email;
-  late String _password; //TODO hash and salt!
+  String _email = "";
+  String _password = "";
+
   @override
   Widget build(BuildContext context) {
     return LoadingProvider(
       themeData: LoadingThemeData(),
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
@@ -60,39 +59,40 @@ class _LoginScreenState extends State<LoginScreen> {
                 textAlign: TextAlign.center,
                 obscureText: true,
                 onChanged: (value) {
+                  //TODO salt and hash?
                   _password = value;
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your password.',
+                  hintText: 'Enter your password',
                 ),
               ),
               SizedBox(
                 height: 24.0,
               ),
               RoundedButton(
-                text: 'Log In',
-                color: Colors.lightBlueAccent,
+                text: 'Register',
+                color: Colors.blueAccent,
                 onPressed: () async {
                   setState(() {
-                    showLoadingDialog(); //idk if set state is necessary
+                    showLoadingDialog(); //idk if this needs call to setState
                   });
                   try {
-                    final user = await _auth.signInWithEmailAndPassword(
-                        email: _email, password: _password);
-                    if (user != null) {
-                      Navigator.pushNamed(context, ContactsScreen.id);
+                    final newUser = await _auth.createUserWithEmailAndPassword(
+                      email: _email,
+                      password: _password,
+                    );
+                    if (newUser != null) {
+                      Navigator.pushNamed(context, ChatScreen.id);
                     }
                   } catch (e) {
-                    //TODO catch bad login deets
+                    //TODO deal with new user exceptions
                     print(e);
-                    errorMessage = e.toString();
                   }
                   setState(() {
-                    hideLoadingDialog(); //idk if setstate is necessary
+                    showLoadingDialog(); //idk if this needs call to setState
                   });
                 },
               ),
-              Text(errorMessage),
             ],
           ),
         ),

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "899488806489",
+    "project_id": "is-now-good",
+    "storage_bucket": "is-now-good.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899488806489:android:87c6a3f265f7d81e046348",
+        "android_client_info": {
+          "package_name": "com.lukestringer.is_now_good"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "899488806489-64kvfs18n2tdp8aq2eifqalt40dqrk10.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZR84ZCZtMKlbeDve5txNUmn0oi6oeMlc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899488806489-64kvfs18n2tdp8aq2eifqalt40dqrk10.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
