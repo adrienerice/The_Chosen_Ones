@@ -22,7 +22,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
   String _email = "";
   String _password = "";
-  String _name = "";
+  String _fullname = "";
   String errorText = "";
 
   //--------------------------------------------------------------
@@ -98,10 +98,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.name,
                 onChanged: (value) {
-                  _name = value;
+                  _fullname = value;
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your name',
+                  hintText: 'Enter your full name',
                 ),
               ),
               SizedBox(
@@ -143,15 +143,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       // print('REGISTERED ' + newUser.user!.uid);
                       // _auth.
                       //TODO add name and email to users(email, name, contacts(emails in array))
-                      _firestore.collection('users').add({
-                        'contacts': {
-                          'emails': [],
-                          'names': [],
-                        },
+                      _firestore
+                          .collection('users')
+                          .doc(newUser.user!.uid)
+                          .set({
                         'email': _email,
-                        'name': _name,
+                        'fullname': _fullname,
                       });
-                      Navigator.pushNamed(context, ContactsScreen.id);
+                      Navigator.pushNamed(
+                        context,
+                        ContactsScreen.id,
+                        arguments: [newUser.user!.uid, _fullname],
+                      );
                     }
                   } catch (e) {
                     //TODO deal with new user exceptions

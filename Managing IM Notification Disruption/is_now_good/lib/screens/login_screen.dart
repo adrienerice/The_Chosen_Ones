@@ -109,8 +109,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   try {
                     final user = await _auth.signInWithEmailAndPassword(
                         email: _email, password: _password);
-                    if (user != null) {
-                      Navigator.pushNamed(context, ContactsScreen.id);
+                    if (user != null && user.user != null) {
+                      //get users full name
+                      String fullname = (await _firestore
+                          .collection('users')
+                          .doc(user.user!.uid)
+                          .get())['fullname'];
+                      Navigator.pushNamed(
+                        context,
+                        ContactsScreen.id,
+                        arguments: [user.user!.uid, fullname],
+                      );
                     }
                   } catch (e) {
                     //TODO catch bad login deets

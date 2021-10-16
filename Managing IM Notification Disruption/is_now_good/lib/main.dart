@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:is_now_good/screens/add_contact_screen.dart';
 
 import 'package:load/load.dart';
 
@@ -42,13 +43,13 @@ class MyApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
             initialRoute: WelcomeScreen.id,
-            // initialRoute: ContactsScreen.id,
             routes: {
               WelcomeScreen.id: (context) => WelcomeScreen(),
               ChatScreen.id: (context) => ChatScreen(),
               LoginScreen.id: (context) => LoginScreen(),
               RegistrationScreen.id: (context) => RegistrationScreen(),
               ContactsScreen.id: (context) => ContactsScreen(),
+              AddContactScreen.id: (context) => AddContactScreen(),
             },
           );
         }

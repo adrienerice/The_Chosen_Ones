@@ -26,7 +26,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
   String messageText = "";
   //the emails of current user and user to chat with, sorted
-  List<dynamic> chatID = [];
+  String chatID = '';
   String contactName = '⚡️Chat';
 
   @override
@@ -54,11 +54,12 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     contactName = args[0] as String;
-    chatID = args[1] as List<dynamic>;
+    chatID = args[1] as String;
 
     // contactName = _auth.
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         leading: null,
         actions: <Widget>[
           IconButton(
@@ -70,7 +71,6 @@ class _ChatScreenState extends State<ChatScreen> {
               }),
         ],
         title: Text(contactName),
-        backgroundColor: Colors.lightGreenAccent,
       ),
       body: SafeArea(
         child: Column(
