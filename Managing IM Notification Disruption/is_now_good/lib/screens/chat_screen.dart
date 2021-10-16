@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 final _firestore = FirebaseFirestore.instance;
-User? loggedInUser;
+User? loggedInUser; //ONEDAY move to Provider
 
 class ChatScreen extends StatefulWidget {
   static const String id = 'chat_screen';
@@ -17,7 +17,7 @@ class ChatScreen extends StatefulWidget {
 IS this just to make it better or to make it work for your needs? 
 TODO move messages stream into new file? provider?
 TODO contacts list screen
-  TODO add contact
+TODO add contact
 
  */
 
@@ -25,7 +25,8 @@ class _ChatScreenState extends State<ChatScreen> {
   final messageTextController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   String messageText = "";
-  List<String> emails = []; //the emails of current user and user to chat with
+  //the emails of current user and user to chat with, sorted
+  List<dynamic> chatID = [];
   String contactName = '⚡️Chat';
 
   @override
@@ -51,7 +52,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    emails = ModalRoute.of(context)!.settings.arguments as List<String>;
+    var args = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+    contactName = args[0] as String;
+    chatID = args[1] as List<dynamic>;
+
     // contactName = _auth.
     return Scaffold(
       appBar: AppBar(
@@ -66,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
               }),
         ],
         title: Text(contactName),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.lightGreenAccent,
       ),
       body: SafeArea(
         child: Column(
@@ -205,7 +209,7 @@ class MessageBubble extends StatelessWidget {
               bottomLeft: Radius.circular(30.0),
               topLeft: isMe ? Radius.circular(30.0) : Radius.zero,
             ),
-            color: isMe ? Colors.lightBlueAccent : Colors.white,
+            color: isMe ? Colors.lightGreenAccent : Colors.white,
             child: Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 10.0,

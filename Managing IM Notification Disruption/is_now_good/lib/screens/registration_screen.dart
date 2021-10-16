@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:is_now_good/screens/contacts_screen.dart';
 
 import 'package:load/load.dart';
 
 import '/components/rounded_button.dart';
 import '/constants.dart';
-import '/screens/chat_screen.dart';
+import 'package:is_now_good/screens/contacts_screen.dart';
+
+final _firestore = FirebaseFirestore.instance;
+User? loggedInUser;
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
@@ -20,6 +24,31 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String _password = "";
   String _name = "";
   String errorText = "";
+
+  //--------------------------------------------------------------
+  // This section of code is reused a bunch, using Provider (as seen in todos)
+  // will alleviate problem
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        print("User logged in: " + loggedInUser!.email.toString());
+      } else {
+        print("user was null");
+      }
+    } catch (e) {
+      print("error in getCurrentUser()");
+      print(e);
+    }
+  }
+  //------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +127,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               RoundedButton(
                 text: 'Register',
-                color: Colors.blueAccent,
+                color: Colors.greenAccent,
                 onPressed: () async {
                   setState(() {
                     showLoadingDialog(); //idk if this needs call to setState
@@ -114,11 +143,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       // print('REGISTERED ' + newUser.user!.uid);
                       // _auth.
                       //TODO add name and email to users(email, name, contacts(emails in array))
-                      Navigator.pushNamed(
-                        context,
-                        ContactsScreen.id,
-                        arguments: _email,
-                      );
+                      _firestore.collection('users').add({
+                        'contacts': {
+                          'emails': [],
+                          'names': [],
+                        },
+                        'email': _email,
+                        'name': _name,
+                      });
+                      Navigator.pushNamed(context, ContactsScreen.id);
                     }
                   } catch (e) {
                     //TODO deal with new user exceptions

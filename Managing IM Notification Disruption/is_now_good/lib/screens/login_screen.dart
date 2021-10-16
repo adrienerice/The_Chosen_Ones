@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:is_now_good/screens/contacts_screen.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:load/load.dart';
+
 import '/constants.dart';
 import '/components/rounded_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '/screens/chat_screen.dart';
+import 'package:is_now_good/screens/contacts_screen.dart';
+
+final _firestore = FirebaseFirestore.instance;
+User? loggedInUser;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -20,8 +26,32 @@ class _LoginScreenState extends State<LoginScreen> {
   String errorMessage = '';
   late String _email;
   late String _password; //TODO hash and salt!
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        print("User logged in: " + loggedInUser!.email.toString());
+      } else {
+        print("user was null");
+      }
+    } catch (e) {
+      print("error in getCurrentUser()");
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // TODO Check if logged in already and skip screen
+    // TODO Check about session persistence between uses!!!!
     return LoadingProvider(
       themeData: LoadingThemeData(),
       child: Scaffold(
@@ -71,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               RoundedButton(
                 text: 'Log In',
-                color: Colors.lightBlueAccent,
+                color: Colors.lightGreenAccent,
                 onPressed: () async {
                   setState(() {
                     showLoadingDialog(); //idk if setstate is necessary
@@ -80,11 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     final user = await _auth.signInWithEmailAndPassword(
                         email: _email, password: _password);
                     if (user != null) {
-                      Navigator.pushNamed(
-                        context,
-                        ContactsScreen.id,
-                        arguments: _email,
-                      );
+                      Navigator.pushNamed(context, ContactsScreen.id);
                     }
                   } catch (e) {
                     //TODO catch bad login deets

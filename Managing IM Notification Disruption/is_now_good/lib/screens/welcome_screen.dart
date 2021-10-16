@@ -32,7 +32,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       upperBound: 1.0,
     );
 
-    animation = ColorTween(begin: Colors.blueGrey, end: Colors.white)
+    animation = ColorTween(begin: Colors.green[900], end: Colors.white)
         .animate(controller);
 
     controller.forward(); //AnimationStatus.completed on finish
@@ -76,7 +76,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 AnimatedTextKit(
                   animatedTexts: [
                     TypewriterAnimatedText(
-                      'Flash Chat',
+                      'Is Now Good',
                       //'${controller.value.toInt()}%',
                       textStyle: const TextStyle(
                         fontSize: 45.0,
@@ -93,14 +93,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
             RoundedButton(
               text: 'Log In',
-              color: Colors.lightBlueAccent,
+              color: Colors.lightGreenAccent,
               onPressed: () {
                 Navigator.pushNamed(context, LoginScreen.id);
               },
             ),
             RoundedButton(
               text: 'Register',
-              color: Colors.blueAccent,
+              color: Colors.greenAccent,
               onPressed: () {
                 Navigator.pushNamed(context, RegistrationScreen.id);
               },
