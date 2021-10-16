@@ -74,13 +74,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.lightBlueAccent,
                 onPressed: () async {
                   setState(() {
-                    showLoadingDialog(); //idk if set state is necessary
+                    showLoadingDialog(); //idk if setstate is necessary
                   });
                   try {
                     final user = await _auth.signInWithEmailAndPassword(
                         email: _email, password: _password);
                     if (user != null) {
-                      Navigator.pushNamed(context, ContactsScreen.id);
+                      Navigator.pushNamed(
+                        context,
+                        ContactsScreen.id,
+                        arguments: _email,
+                      );
                     }
                   } catch (e) {
                     //TODO catch bad login deets

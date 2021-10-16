@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:load/load.dart';
 import '/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,6 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final messageTextController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   String messageText = "";
+  List<String> emails = []; //the emails of current user and user to chat with
   String contactName = '⚡️Chat';
 
   @override
@@ -49,7 +51,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    contactName = ModalRoute.of(context)!.settings.arguments as String;
+    emails = ModalRoute.of(context)!.settings.arguments as List<String>;
+    // contactName = _auth.
     return Scaffold(
       appBar: AppBar(
         leading: null,
@@ -57,11 +60,12 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
+                //TODO move signout somewhere better
                 _auth.signOut();
                 Navigator.pop(context);
               }),
         ],
-        title: Text(contactName), //TODO contact name
+        title: Text(contactName),
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: SafeArea(
@@ -88,11 +92,12 @@ class _ChatScreenState extends State<ChatScreen> {
                       //Implement send functionality.
                       if (messageText != "") {
                         messageTextController.clear();
-                        _firestore.collection('messages').add({
-                          "sender": loggedInUser!.email,
-                          "text": messageText,
-                          'time': Timestamp.now(),
-                        });
+                        //TODO change to chats(two emails in array)>messages>add(sender, text, time)
+                        // _firestore.collection('chats').add({
+                        //   "sender": loggedInUser!.email,
+                        //   "text": messageText,
+                        //   'time': Timestamp.now(),
+                        // });
                       }
                     },
                     child: Text(
@@ -115,24 +120,28 @@ class MessageStream extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: _firestore
-          .collection('messages')
-          .orderBy('ts', descending: true)
+          //TODO add proper stream
+          .collection('chats')
+          // .orderBy('ts', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
-            ),
-          );
+          showLoadingDialog();
+          return Container();
         } else {
+          hideLoadingDialog();
           final messages = snapshot.data!.docs;
+          print(loggedInUser!.displayName);
+          print(loggedInUser!.uid);
           List<MessageBubble> messageBubbles = [];
           //TODO only get messages for current contact (IN DB, NOT LOCALLY)
           for (var message in messages) {
-            final messageText = message.data()['text'];
-            final messageSender = message.data()['sender'];
-            final Timestamp messageTime = message.data()['ts'];
+            final data = message.data();
+            //TODO change to chats(two names in array)>messages>(sender,text,time)
+            final messageText = 'Filler'; //message.data()['text'];
+            final messageSender = 'Filler2'; //message.data()['sender'];
+            final Timestamp messageTime = Timestamp.now(); //filler
+            //message.data()['ts'];
 
             final currentUser = loggedInUser!.email;
 

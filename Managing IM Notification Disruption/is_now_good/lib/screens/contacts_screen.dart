@@ -1,7 +1,6 @@
 import '/screens/chat_screen.dart';
 import '/model/notification_api.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class ContactsScreen extends StatefulWidget {
   const ContactsScreen({Key? key}) : super(key: key);
@@ -13,13 +12,13 @@ class ContactsScreen extends StatefulWidget {
 
 class _ContactsScreenState extends State<ContactsScreen> {
   List<String> contactNames = [];
+  String currentUserEmail = "";
 
   @override
   void initState() {
     super.initState();
     NotificationApi.init();
     listenNotifications();
-    contactNames = getContactNames();
   }
 
   List<String> getContactNames() {
@@ -27,6 +26,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
     List<String> contacts = ['Andy Dwyer', 'Ron Swanson', 'Jeff Bezos'];
     // TODO Sort contacts by most recent message (unless they are retrieved like that automatically)
     contacts.sort();
+
     return contacts;
   }
 
@@ -40,6 +40,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // From the user ID passed in from route, get all the chats.
+    currentUserEmail = ModalRoute.of(context)!.settings.arguments as String;
+    contactNames = getContactNames();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, color: Colors.white),
@@ -69,7 +72,14 @@ class _ContactsScreenState extends State<ContactsScreen> {
           //TODO add 0 contacts case
           return TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, ChatScreen.id);
+              Navigator.pushNamed(
+                context,
+                ChatScreen.id,
+                //TODO rpelace with email of actual user tapped on
+                //TODO change to list of lists, each list with email then name
+                arguments: ['alice@alice.alice', currentUserEmail],
+                // should one day also break this stuff out into model.
+              );
             },
             child: ListTile(
               leading: CircleAvatar(
