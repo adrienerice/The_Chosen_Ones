@@ -24,6 +24,7 @@ class ContactsScreen extends StatefulWidget {
 class _ContactsScreenState extends State<ContactsScreen> {
   late String _fullname;
   late String myUID;
+  late String myEmail;
   final _auth = FirebaseAuth.instance;
 
   @override
@@ -40,10 +41,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
       if (user != null) {
         loggedInUser = user;
         print("User logged in: " + loggedInUser!.email.toString());
-        _fullname = (await _firestore
-            .collection('users')
-            .doc(user.uid)
-            .get())['fullname'];
+        var userDocument =
+            (await _firestore.collection('users').doc(user.uid).get());
+        _fullname = userDocument['fullname'];
+        myEmail = userDocument['email'];
         myUID = user.uid;
       } else {
         print("user was null");
@@ -67,10 +68,24 @@ class _ContactsScreenState extends State<ContactsScreen> {
     List<dynamic> contactNames = [];
     List<dynamic> chatIDs = [];
 
+    Widget addContactsHint = const Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Text(
+          'Use the plus button to add a contact',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20.0),
+        ),
+      ),
+    );
+
     return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
       future: _firestore.collection('users').doc(loggedInUser!.uid).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
+          //hide loading dialog to solve global key issue
+          //(caused by using show without hide)
+          hideLoadingDialog();
           return Scaffold(
             floatingActionButton: FloatingActionButton(
               backgroundColor: Colors.green,
@@ -91,24 +106,41 @@ class _ContactsScreenState extends State<ContactsScreen> {
             ),
             appBar: AppBar(
               backgroundColor: Colors.green,
-              leading:
-                  null, //removes the back button so it cant be closed out of
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.menu, color: Colors.white),
-                  onPressed: () {
-                    //TODO add side screen showing more info/log out
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.logout),
-                  onPressed: () {
-                    _auth.signOut();
-                    print(' ----------------- LOGGED OUT ----------------- ');
-                  },
-                ),
-              ],
-              title: Text('⚡️ Contacts for $_fullname'),
+              title: Text('Contacts for $_fullname'),
+            ),
+            drawer: Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  DrawerHeader(
+                    child: Expanded(
+                      child: Center(
+                        child: Text(
+                          'Your Email Address:\n' + myEmail,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                    ),
+                  ),
+                  TextButton(
+                    child: ListTile(
+                      leading: Icon(Icons.logout),
+                      title: Text('Tap here to log out.'),
+                    ),
+                    onPressed: () {
+                      _auth.signOut();
+                      print(' ----------------- LOGGED OUT ----------------- ');
+                    },
+                  ),
+                ],
+              ),
             ),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,9 +151,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     if (!snapshot.hasData) {
                       showLoadingDialog();
                       return Column(
-                        children: [
-                          Text('Press the plus button to add a contact'),
-                        ],
+                        children: [addContactsHint],
                       );
                     } else {
                       hideLoadingDialog();
@@ -196,9 +226,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                         );
                       }
                       if (contactNames.length == 0) {
-                        contacts.add(
-                          Text('Use the plus button to add a contact'),
-                        );
+                        contacts.add(addContactsHint);
                       }
 
                       return Expanded(

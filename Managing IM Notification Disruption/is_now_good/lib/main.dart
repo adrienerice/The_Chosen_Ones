@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:load/load.dart';
 
 import '/screens/add_contact_screen.dart';
 import '/screens/loading_screen.dart';
@@ -32,6 +33,9 @@ class _MyAppState extends State<MyApp> {
     return FutureBuilder(
       future: _initialisation,
       builder: (context, snapshot) {
+        //hide loading dialog to solve global key issue
+        //(caused by using show without hide)
+        hideLoadingDialog();
         // Check for errors
         if (snapshot.hasError) {
           return const MaterialApp(
