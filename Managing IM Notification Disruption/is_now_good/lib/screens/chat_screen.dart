@@ -142,9 +142,9 @@ class MessageStream extends StatelessWidget {
 
   MessageStream({required this.chatID, required this.myName});
 
-  String formatTime(String time) {
-    String formatted = '';
-    int? parsedHour = int.tryParse(time.substring(6, 8));
+  List<String> getFormattedDateAndTime(Timestamp ts) {
+    String rawTime = ts.toDate().toString().substring(5, 16);
+    int? parsedHour = int.tryParse(rawTime.substring(6, 8));
     //ONEDAY handle more gracefully
     int hour = parsedHour != null ? parsedHour : 0;
     late String meridian;
@@ -154,8 +154,8 @@ class MessageStream extends StatelessWidget {
     } else {
       meridian = 'am';
     }
-    String minutes = time.substring(9);
-    String date = time.substring(0, 5);
+    String minutes = rawTime.substring(9);
+    String date = rawTime.substring(0, 5);
     String day = date.substring(3);
     int? monthParsed = int.tryParse(date.substring(0, 2));
     int monthNum = monthParsed != null ? monthParsed : 0;
@@ -184,8 +184,8 @@ class MessageStream extends StatelessWidget {
       suffix = 'th';
     }
     date = day + suffix + " " + months[monthNum - 1];
-    formatted = hour.toString() + ":" + minutes + meridian + "  (" + date + ")";
-    return formatted;
+    String time = hour.toString() + ":" + minutes + meridian;
+    return [date, time];
   }
 
   @override
@@ -220,13 +220,11 @@ class MessageStream extends StatelessWidget {
             } else {
               messageTime = Timestamp(0, 0); //ONEDAY handle more gracefully
             }
-
+            List<String> date_and_time = getFormattedDateAndTime(messageTime);
             final messageBubble = MessageBubble(
               text: messageText,
               sender: messageSender,
-              time: formatTime(
-                messageTime.toDate().toString().substring(5, 16),
-              ),
+              date_and_time: date_and_time,
               isMe: (myName == messageSender),
             );
 
@@ -253,12 +251,12 @@ class MessageBubble extends StatelessWidget {
   MessageBubble({
     required this.sender,
     required this.text,
-    required this.time,
+    required this.date_and_time,
     required this.isMe,
   });
   late final String sender;
   late final String text;
-  late final time;
+  late final List<String> date_and_time;
   late final bool isMe;
 
   @override
@@ -269,13 +267,13 @@ class MessageBubble extends StatelessWidget {
         crossAxisAlignment:
             isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
-          // Text(
-          //   '$sender',
-          //   style: TextStyle(
-          //     fontSize: 12.0,
-          //     color: Colors.black54,
-          //   ),
-          // ),
+          Text(
+            date_and_time[0],
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.black54,
+            ),
+          ),
           Material(
             elevation: 5.0,
             borderRadius: BorderRadius.only(
@@ -300,7 +298,7 @@ class MessageBubble extends StatelessWidget {
             ),
           ),
           Text(
-            '$time',
+            date_and_time[1],
             style: TextStyle(
               fontSize: 12.0,
               color: Colors.black54,
