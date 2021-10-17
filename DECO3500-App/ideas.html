@@ -44,30 +44,18 @@
         </button>
     </a>
 </div>
-<div class="container">
-    <div class="app-title">
-        <p>Weather</p>
-    </div>
-    <div class="notification"> </div>
-    <div class="weather-container">
-        <div class="weather-icon">
-            <img src="icons/unknown.png" alt="">
-        </div>
-        <div class="temperature-value">
-            <p>- °<span>C</span></p>
-        </div>
-        <div class="temperature-description">
-            <p> - </p>
-        </div>
-        <div class="location">
-            <p>-</p>
-        </div>
-    </div>
-</div>
 <div class="ideas-container">
     <div class="ideas-title">
         <p>Ideas</p>
     </div>
+    <button id="ideabutton1" onclick="myideaFunction()">
+        <p>Collaborative options if you plan on cooking:</p></button>
+    <p id="ideademo"></p>
+    <script>
+        function myideaFunction() {
+        document.getElementById("ideademo").innerHTML = `<img src="icons/Cooking-Appliance-Use.png"/>`;
+        }
+    </script>
     <button id="ideabutton2" onclick="myideaFunction2()">
         <p>If the outside conditions are currently sunny:</p></button>
     <p id="ideademo2"></p>
@@ -100,10 +88,15 @@
         document.getElementById("ideademo5").innerHTML = `<img src="icons/Light-Use.png"/>`;
         }
     </script>
+    <button id="ideabutton6" onclick="myideaFunction6()">
+        <p>Washing machine settings for energy efficiency:</p></button>
+    <p id="ideademo6"></p>
+    <script>
+        function myideaFunction6() {
+        document.getElementById("ideademo6").innerHTML = `<img src="icons/Water-Heating.png"/>`;
+        }
+    </script>
 </div>
 
-<script src="app.js"></script>
 </body>
 </html>
-
-
