@@ -144,7 +144,11 @@ class _ContactsScreenState extends State<ContactsScreen> {
                         Navigator.pushNamed(
                           context,
                           ChatScreen.id,
-                          arguments: [contactNames[i], chatIDs[i]],
+                          arguments: [
+                            contactNames[i] as String,
+                            chatIDs[i] as String,
+                            _fullname
+                          ],
                           // ONEDAY break this stuff out into model.
                         );
                       },
@@ -156,7 +160,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
                             height: 40,
                           ),
                         ),
-                        title: Text(contactNames[i]),
+                        title: Text(
+                          contactNames[i].toString(),
+                        ),
                         // trailing: Icon(Icons.check),
                       ),
                     ),

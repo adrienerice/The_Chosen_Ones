@@ -28,6 +28,7 @@ class _ChatScreenState extends State<ChatScreen> {
   //the emails of current user and user to chat with, sorted
   String chatID = '';
   String contactName = '⚡️Chat';
+  String myName = '';
 
   @override
   void initState() {
@@ -52,9 +53,16 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var args = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
-    contactName = args[0] as String;
-    chatID = args[1] as String;
+    if (ModalRoute.of(context) != null) {
+      var args = ModalRoute.of(context)!.settings.arguments as List<String>;
+      contactName = args[0];
+      chatID = args[1];
+      myName = args[2];
+    } else {
+      contactName = 'problem';
+      chatID = 'problem'; //ONEDAY handle more gracefully
+      myName = 'problem';
+    }
 
     // contactName = _auth.
     return Scaffold(
@@ -96,12 +104,18 @@ class _ChatScreenState extends State<ChatScreen> {
                       //Implement send functionality.
                       if (messageText != "") {
                         messageTextController.clear();
-                        //TODO change to chats(two emails in array)>messages>add(sender, text, time)
-                        // _firestore.collection('chats').add({
-                        //   "sender": loggedInUser!.email,
-                        //   "text": messageText,
-                        //   'time': Timestamp.now(),
-                        // });
+                        String now = Timestamp.now().seconds.toString();
+                        _firestore
+                            .collection('chats')
+                            .doc(chatID)
+                            .collection('messages')
+                            .doc(now)
+                            .set(
+                          {
+                            'sender': myName,
+                            'text': messageText,
+                          },
+                        );
                       }
                     },
                     child: Text(
