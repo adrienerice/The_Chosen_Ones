@@ -69,15 +69,6 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         backgroundColor: Colors.green,
         leading: null,
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                //TODO move signout somewhere better
-                _auth.signOut();
-                Navigator.pop(context);
-              }),
-        ],
         title: Text(contactName),
       ),
       body: SafeArea(
@@ -117,6 +108,8 @@ class _ChatScreenState extends State<ChatScreen> {
                           {
                             'sender': myName,
                             'text': messageText,
+                            'audio_notification': true, //TODO ask user
+                            'visual_notification': true,
                           },
                         );
                       }
@@ -141,52 +134,6 @@ class MessageStream extends StatelessWidget {
   late final String myName;
 
   MessageStream({required this.chatID, required this.myName});
-
-  List<String> getFormattedDateAndTime(Timestamp ts) {
-    String rawTime = ts.toDate().toString().substring(5, 16);
-    int? parsedHour = int.tryParse(rawTime.substring(6, 8));
-    //ONEDAY handle more gracefully
-    int hour = parsedHour != null ? parsedHour : 0;
-    late String meridian;
-    if (hour > 12) {
-      hour -= 12;
-      meridian = "pm";
-    } else {
-      meridian = 'am';
-    }
-    String minutes = rawTime.substring(9);
-    String date = rawTime.substring(0, 5);
-    String day = date.substring(3);
-    int? monthParsed = int.tryParse(date.substring(0, 2));
-    int monthNum = monthParsed != null ? monthParsed : 0;
-    List<String> months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    late String suffix;
-    if (day.substring(1) == '1') {
-      suffix = 'st';
-    } else if (day.substring(1) == '2') {
-      suffix = 'nd';
-    } else if (day.substring(1) == '3') {
-      suffix = 'rd';
-    } else {
-      suffix = 'th';
-    }
-    date = day + suffix + " " + months[monthNum - 1];
-    String time = hour.toString() + ":" + minutes + meridian;
-    return [date, time];
-  }
 
   @override
   Widget build(BuildContext context) {

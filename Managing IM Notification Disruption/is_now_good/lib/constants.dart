@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 const kSendButtonTextStyle = TextStyle(
-  color: Colors.lightGreenAccent,
+  color: Colors.green,
   fontWeight: FontWeight.bold,
   fontSize: 18.0,
 );
@@ -34,3 +35,49 @@ const kTextFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
   ),
 );
+
+List<String> getFormattedDateAndTime(Timestamp ts) {
+  String rawTime = ts.toDate().toString().substring(5, 16);
+  int? parsedHour = int.tryParse(rawTime.substring(6, 8));
+  //ONEDAY handle more gracefully
+  int hour = parsedHour != null ? parsedHour : 0;
+  late String meridian;
+  if (hour > 12) {
+    hour -= 12;
+    meridian = "pm";
+  } else {
+    meridian = 'am';
+  }
+  String minutes = rawTime.substring(9);
+  String date = rawTime.substring(0, 5);
+  String day = date.substring(3);
+  int? monthParsed = int.tryParse(date.substring(0, 2));
+  int monthNum = monthParsed != null ? monthParsed : 0;
+  List<String> months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  late String suffix;
+  if (day.substring(1) == '1') {
+    suffix = 'st';
+  } else if (day.substring(1) == '2') {
+    suffix = 'nd';
+  } else if (day.substring(1) == '3') {
+    suffix = 'rd';
+  } else {
+    suffix = 'th';
+  }
+  date = day + suffix + " " + months[monthNum - 1];
+  String time = hour.toString() + ":" + minutes + meridian;
+  return [date, time];
+}

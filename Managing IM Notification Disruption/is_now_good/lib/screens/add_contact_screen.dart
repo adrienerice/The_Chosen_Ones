@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:is_now_good/screens/chat_screen.dart';
 import 'package:load/load.dart';
 import '/components/rounded_button.dart';
 import '/constants.dart';
@@ -62,7 +61,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
               try {
                 //get their id
                 var users = (await _firestore.collection('users').get()).docs;
-                late QueryDocumentSnapshot<Map<String, dynamic>> toAdd;
+                QueryDocumentSnapshot<Map<String, dynamic>>? toAdd;
                 for (var user in users) {
                   if (_contactsEmail == user['email']) {
                     toAdd = user;
@@ -70,8 +69,13 @@ class _AddContactScreenState extends State<AddContactScreen> {
                   }
                 }
                 if (toAdd == null) {
+                  Timestamp now = Timestamp.now();
+                  String s = (now.seconds % 60).toString();
+                  List<String> dAndT = getFormattedDateAndTime(now);
+                  String d = dAndT[0];
+                  String t = dAndT[1];
                   errorMessage =
-                      'Can\'t find user with that email (${Timestamp.now().toString()})';
+                      'Can\'t find user with that email\n(${s} seconds past $t, $d)';
                 } else {
                   //TODO do I need to check if it's already added that chat?
                   // get our uids
@@ -117,7 +121,11 @@ class _AddContactScreenState extends State<AddContactScreen> {
               });
             },
           ),
-          Text(errorMessage),
+          Center(
+              child: Text(
+            errorMessage,
+            textAlign: TextAlign.center,
+          )),
         ],
       ),
     );

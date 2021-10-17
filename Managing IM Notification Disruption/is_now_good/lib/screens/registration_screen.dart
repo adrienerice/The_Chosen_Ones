@@ -7,7 +7,7 @@ import 'package:load/load.dart';
 
 import '/components/rounded_button.dart';
 import '/constants.dart';
-import 'package:is_now_good/screens/contacts_screen.dart';
+import '/screens/contacts_screen.dart';
 
 final _firestore = FirebaseFirestore.instance;
 User? loggedInUser;
@@ -155,6 +155,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ContactsScreen.id,
                         arguments: [newUser.user!.uid, _fullname],
                       );
+                      print(' ----------------- REGISTERED ----------------- ');
                     }
                   } catch (e) {
                     //TODO deal with new user exceptions

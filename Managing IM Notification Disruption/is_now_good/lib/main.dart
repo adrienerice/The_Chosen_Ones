@@ -1,11 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:is_now_good/screens/add_contact_screen.dart';
-
-import 'package:load/load.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
+import '/screens/add_contact_screen.dart';
+import '/screens/loading_screen.dart';
 import 'screens/welcome_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/contacts_screen.dart';
@@ -17,11 +17,16 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
 
-  final Future<FirebaseApp> _initialisation = Firebase.initializeApp();
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
+  final Future<FirebaseApp> _initialisation = Firebase.initializeApp();
+  String initialRoute = WelcomeScreen.id;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -41,8 +46,9 @@ class MyApp extends StatelessWidget {
 
         // Once comlpete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
+          final _auth = FirebaseAuth.instance;
           return MaterialApp(
-            initialRoute: WelcomeScreen.id,
+            home: AuthStreamBuilder(),
             routes: {
               WelcomeScreen.id: (context) => WelcomeScreen(),
               ChatScreen.id: (context) => ChatScreen(),
@@ -61,34 +67,32 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({Key? key}) : super(key: key);
+class AuthStreamBuilder extends StatefulWidget {
+  const AuthStreamBuilder({Key? key}) : super(key: key);
 
   @override
-  _LoadingScreenState createState() => _LoadingScreenState();
+  State<AuthStreamBuilder> createState() => _AuthStreamBuilderState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
-  @override
-  void initState() {
-    super.initState();
-    // Show loading once, after widget has loaded. May not be necessary.
-    if (WidgetsBinding.instance != null) {
-      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-        showLoadingDialog();
-      });
-    }
-  }
-
+class _AuthStreamBuilderState extends State<AuthStreamBuilder> {
   @override
   Widget build(BuildContext context) {
-    return LoadingProvider(
-      themeData: LoadingThemeData(),
-      child: MaterialApp(
-        home: Scaffold(
-          body: Container(),
-        ),
-      ),
+    final _auth = FirebaseAuth.instance;
+    return StreamBuilder<User?>(
+      stream: _auth.authStateChanges(),
+      builder: (context, snapshot) {
+        print(' ------------------- AUTH CHANGE --------------------- ');
+        User? user = snapshot.data;
+        if (user != null) {
+          print(' ------------------ LOG IN ----------------------- ');
+          print(user.email.toString()); //TODO remove
+          print(' ----------------------------------------- ');
+          return ContactsScreen();
+        } else {
+          print(' -------------------- WELCOME --------------------- ');
+          return WelcomeScreen();
+        }
+      },
     );
   }
 }

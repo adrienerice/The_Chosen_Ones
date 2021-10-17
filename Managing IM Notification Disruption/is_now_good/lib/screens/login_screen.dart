@@ -10,7 +10,6 @@ import '/components/rounded_button.dart';
 import 'package:is_now_good/screens/contacts_screen.dart';
 
 final _firestore = FirebaseFirestore.instance;
-User? loggedInUser;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -28,30 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late String _password; //TODO hash and salt!
 
   @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-  }
-
-  void getCurrentUser() {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        print("User logged in: " + loggedInUser!.email.toString());
-      } else {
-        print("user was null");
-      }
-    } catch (e) {
-      print("error in getCurrentUser()");
-      print(e);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // TODO Check if logged in already and skip screen
-    // TODO Check about session persistence between uses!!!!
     return LoadingProvider(
       themeData: LoadingThemeData(),
       child: Scaffold(
@@ -108,24 +84,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
                   try {
                     final user = await _auth.signInWithEmailAndPassword(
-                        email: _email, password: _password);
-                    if (user != null && user.user != null) {
-                      //get users full name
-                      String fullname = (await _firestore
-                          .collection('users')
-                          .doc(user.user!.uid)
-                          .get())['fullname'];
-                      Navigator.pushNamed(
-                        context,
-                        ContactsScreen.id,
-                        arguments: [user.user!.uid, fullname],
-                      );
-                    }
+                      email: _email,
+                      password: _password,
+                    );
                   } catch (e) {
                     //TODO catch bad login deets
                     print(e);
                     errorMessage = e.toString();
                   }
+                  Navigator.pop(context);
                   setState(() {
                     hideLoadingDialog(); //idk if setstate is necessary
                   });
