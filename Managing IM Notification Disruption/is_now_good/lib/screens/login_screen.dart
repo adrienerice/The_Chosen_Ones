@@ -79,9 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 text: 'Log In',
                 color: Colors.lightGreenAccent,
                 onPressed: () async {
-                  setState(() {
-                    showLoadingDialog(); //idk if setstate is necessary
-                  });
+                  showLoadingDialog();
                   try {
                     final user = await _auth.signInWithEmailAndPassword(
                       email: _email,
@@ -93,9 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     errorMessage = e.toString();
                   }
                   Navigator.pop(context);
-                  setState(() {
-                    hideLoadingDialog(); //idk if setstate is necessary
-                  });
+                  hideLoadingDialog();
                 },
               ),
               Text(errorMessage),

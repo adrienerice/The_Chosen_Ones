@@ -31,3 +31,7 @@ understand current behaviours of IM vs IRL
 ### Results
 #### Transcripts
 #### Affinity Diagrams/Interview Insights
+
+
+The issue with the individual statuses comes about when trying to expand to more than just 1 person. This is another design issue for the future. Some examples include:
+having a screen specifically for 

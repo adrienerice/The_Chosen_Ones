@@ -54,10 +54,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     if (ModalRoute.of(context) != null) {
-      var args = ModalRoute.of(context)!.settings.arguments as List<String>;
-      contactName = args[0];
-      chatID = args[1];
-      myName = args[2];
+      chatID = ModalRoute.of(context)!.settings.arguments as String;
     } else {
       contactName = 'problem';
       chatID = 'problem'; //ONEDAY handle more gracefully

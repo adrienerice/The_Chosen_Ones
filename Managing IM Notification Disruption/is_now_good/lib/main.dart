@@ -1,17 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:load/load.dart';
+import 'package:provider/provider.dart';
 
 import '/screens/add_contact_screen.dart';
 import '/screens/loading_screen.dart';
-import 'screens/welcome_screen.dart';
-import 'screens/login_screen.dart';
-import 'screens/contacts_screen.dart';
-import 'screens/chat_screen.dart';
-import 'screens/registration_screen.dart';
+import '/screens/welcome_screen.dart';
+import '/screens/login_screen.dart';
+import '/screens/contacts_screen.dart';
+import '/screens/chat_screen.dart';
+import '/screens/registration_screen.dart';
+
+import '/model/user_details.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,23 +51,23 @@ class _MyAppState extends State<MyApp> {
             ),
           );
         }
-
         // Once comlpete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          final _auth = FirebaseAuth.instance;
-          return MaterialApp(
-            home: AuthStreamBuilder(),
-            routes: {
-              WelcomeScreen.id: (context) => WelcomeScreen(),
-              ChatScreen.id: (context) => ChatScreen(),
-              LoginScreen.id: (context) => LoginScreen(),
-              RegistrationScreen.id: (context) => RegistrationScreen(),
-              ContactsScreen.id: (context) => ContactsScreen(),
-              AddContactScreen.id: (context) => AddContactScreen(),
-            },
+          return ChangeNotifierProvider<UserDetails>(
+            create: (_) => UserDetails(),
+            child: MaterialApp(
+              home: AuthStreamBuilder(),
+              routes: {
+                WelcomeScreen.id: (context) => WelcomeScreen(),
+                ChatScreen.id: (context) => ChatScreen(),
+                LoginScreen.id: (context) => LoginScreen(),
+                RegistrationScreen.id: (context) => RegistrationScreen(),
+                ContactsScreen.id: (context) => ContactsScreen(),
+                AddContactScreen.id: (context) => AddContactScreen(),
+              },
+            ),
           );
         }
-
         // Otherwise, show something whilst waiting for initialisation to complete.
         return const LoadingScreen();
       },
@@ -89,7 +93,7 @@ class _AuthStreamBuilderState extends State<AuthStreamBuilder> {
         User? user = snapshot.data;
         if (user != null) {
           print(' ------------------ LOG IN ----------------------- ');
-          print(user.email.toString()); //TODO remove
+          print(user.email.toString());
           print(' ----------------------------------------- ');
           return ContactsScreen();
         } else {

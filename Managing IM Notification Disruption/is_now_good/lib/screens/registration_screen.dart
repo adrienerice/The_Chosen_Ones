@@ -10,7 +10,6 @@ import '/constants.dart';
 import '/screens/contacts_screen.dart';
 
 final _firestore = FirebaseFirestore.instance;
-User? loggedInUser;
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
@@ -24,31 +23,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String _password = "";
   String _fullname = "";
   String errorText = "";
-
-  //--------------------------------------------------------------
-  // This section of code is reused a bunch, using Provider (as seen in todos)
-  // will alleviate problem
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-  }
-
-  void getCurrentUser() {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        print("User logged in: " + loggedInUser!.email.toString());
-      } else {
-        print("user was null");
-      }
-    } catch (e) {
-      print("error in getCurrentUser()");
-      print(e);
-    }
-  }
-  //------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +85,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 textAlign: TextAlign.center,
                 obscureText: true,
                 onChanged: (value) {
-                  //TODO salt and hash?
                   _password = value;
                 },
                 decoration: kTextFieldDecoration.copyWith(
@@ -129,44 +102,32 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 text: 'Register',
                 color: Colors.greenAccent,
                 onPressed: () async {
-                  setState(() {
-                    showLoadingDialog(); //idk if this needs call to setState
-                  });
+                  showLoadingDialog();
+                  if (_fullname.length == 0) {
+                    errorText = 'Please enter your full name';
+                    return;
+                  }
                   try {
                     final newUser = await _auth.createUserWithEmailAndPassword(
                       email: _email,
                       password: _password,
                     );
-                    if (newUser != null && newUser.user != null) {
-                      // newUser.user!.updateDisplayName(_name);
-                      // _auth.currentUser!.updateDisplayName(_name);
-                      // print('REGISTERED ' + newUser.user!.uid);
-                      // _auth.
-                      //TODO add name and email to users(email, name, contacts(emails in array))
-                      _firestore
-                          .collection('users')
-                          .doc(newUser.user!.uid)
-                          .set({
+                    if (newUser.user != null) {
+                      User user = newUser.user!;
+                      _firestore.collection('users').doc(user.uid).set({
                         'email': _email,
                         'fullname': _fullname,
                       });
-                      Navigator.pushNamed(
-                        context,
-                        ContactsScreen.id,
-                        arguments: [newUser.user!.uid, _fullname],
-                      );
+                      Navigator.pushNamed(context, ContactsScreen.id);
                       print(' ----------------- REGISTERED ----------------- ');
                     }
                   } catch (e) {
-                    //TODO deal with new user exceptions
-                    print(e);
                     setState(() {
+                      //ONEDAY handle this more gracefully
                       errorText = e.toString();
                     });
                   }
-                  setState(() {
-                    hideLoadingDialog(); //idk if this needs call to setState
-                  });
+                  hideLoadingDialog();
                 },
               ),
               Text(errorText),
