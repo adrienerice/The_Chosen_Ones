@@ -9,13 +9,12 @@ body{
 .container{
     width: 300px;    
     background-color: #FFF;
-    
-    display: block;
-    margin: 5 left;
+
+    float: left;
+    margin: top;
+    position: relative;
     
     border-radius: 10px;
-    padding-bottom : 50px;
-    padding-left: 150px;
 }
 
 .app-title{
@@ -106,6 +105,200 @@ body{
     color: #293251;
     text-align: center;
     font-size: 0.8em;
+}
+
+.menu-container {
+  float: left;
+}
+
+.button {
+  display: flex;
+  height: 50px;
+  padding: 0;
+  background: #5BC1CF;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  overflow: hidden;
+  font-family: "Quicksand", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button:hover {
+  background: #468E99;
+}
+
+.button:active {
+  background: #468E99;
+}
+
+.button__text,
+.button__icon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 5px;
+  color: #fff;
+  height: 100%;
+  width: 50px;
+  height: 50px;
+}
+
+.button__icon {
+  font-size: 1.5em;
+  background: #5BC1CF;
+
+}
+
+.button__icon img {
+    height: 100%;
+    width: 50px;
+    height: 50px;
+    display: block;
+    margin: 0 auto;
+}
+
+.buttonTwo {
+  display: flex;
+  height: 50px;
+  padding: 0;
+  background: #5BC1CF;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  overflow: hidden;
+  font-family: "Quicksand", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.buttonTwo:hover {
+  background: #468E99;
+}
+
+.buttonTwo:active {
+  background: #468E99;
+}
+
+.button__textTwo,
+.button__icon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 33px;
+  color: #fff;
+  height: 100%;
+  width: 50px;
+  height: 50px;
+}
+
+.button__iconTwo {
+  font-size: 1.5em;
+  background: #5BC1CF;
+}
+
+.button__iconTwo img {
+    height: 100%;
+    width: 50px;
+    height: 50px;
+    display: block;
+    margin: 0 auto;
+}
+
+.buttonThree {
+  display: flex;
+  height: 50px;
+  padding: 0;
+  background: #5BC1CF;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  overflow: hidden;
+  font-family: "Quicksand", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.buttonThree:hover {
+  background: #468E99;
+}
+
+.buttonThree:active {
+  background: #468E99;
+}
+
+.button__textThree,
+.button__icon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 28px;
+  color: #fff;
+  height: 100%;
+
+}
+
+.button__iconThree {
+  font-size: 1.5em;
+  background: #5BC1CF;
+}
+
+.button__iconThree img {
+    height: 100%;
+    width: 50px;
+    height: 50px;
+    display: block;
+    margin: 0 auto;
+}
+
+.buttonFour {
+  display: flex;
+  height: 50px;
+  padding: 0;
+  background: #5BC1CF;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  overflow: hidden;
+  font-family: "Quicksand", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.buttonFour:hover {
+  background: #468E99;
+}
+
+.buttonFour:active {
+  background: #468E99;
+}
+
+.button__textFour,
+.button__iconFour {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 15px;
+  color: #fff;
+  height: 100%;
+}
+
+.button__iconFour {
+  font-size: 1.5em;
+  background: #5BC1CF;
+}
+
+.button__iconFour img {
+    height: 100%;
+    width: 50px;
+    height: 50px;
+    display: block;
+    margin: 0 auto;
 }
 
 .idea-container {

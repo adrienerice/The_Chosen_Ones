@@ -7,27 +7,52 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-    <div class="container">
-        <div class="app-title">
-            <p>Weather</p>
+<div class="menu-container">
+    <button type="button" class="button">
+        <span class="button__text">Home</span>
+        <span class="button__icon">
+            <img src="icons/energy_use.png" alt="">
+        </span>
+    </button>
+    <button type="buttonTwo" class="buttonTwo">
+        <span class="button__textTwo">Ideas</span>
+        <span class="button__iconTwo">
+            <img src="icons/107788.png" alt="">
+        </span>
+    </button>
+    <button type="buttonThree" class="buttonThree">
+    <span class="button__textThree">Statistics</span>
+    <span class="button__iconThree">
+        <img src="icons/statistics.png" alt="">
+  </span>
+</button>
+    <button type="buttonFour" class="buttonFour">
+        <span class="button__textFour">Settings</span>
+        <span class="button__iconFour">
+            <img src="icons/settings.png" alt="">
+        </span>
+    </button>
+</div>
+<div class="container">
+    <div class="app-title">
+        <p>Weather</p>
+    </div>
+    <div class="notification"> </div>
+    <div class="weather-container">
+        <div class="weather-icon">
+            <img src="icons/unknown.png" alt="">
         </div>
-        <div class="notification"> </div>
-        <div class="weather-container">
-            <div class="weather-icon">
-                <img src="icons/unknown.png" alt="">
-            </div>
-            <div class="temperature-value">
-                <p>- °<span>C</span></p>
-            </div>
-            <div class="temperature-description">
-                <p> - </p>
-            </div>
-            <div class="location">
-                <p>-</p>
-            </div>
+        <div class="temperature-value">
+            <p>- °<span>C</span></p>
+        </div>
+        <div class="temperature-description">
+            <p> - </p>
+        </div>
+        <div class="location">
+            <p>-</p>
         </div>
     </div>
+</div>
     <div class="idea-container">
         <button id="button1" onclick="myFunction()">Are all household members home?</button>
         <p id = "demo"></p>
