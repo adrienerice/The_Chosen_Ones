@@ -84,7 +84,7 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            MessageStream(),
+            MessageStream(chatID: chatID, myName: myName),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -93,6 +93,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: TextField(
                       controller: messageTextController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 5,
+                      minLines: 1,
                       onChanged: (value) {
                         messageText = value;
                       },
@@ -134,13 +137,64 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class MessageStream extends StatelessWidget {
+  late final String chatID;
+  late final String myName;
+
+  MessageStream({required this.chatID, required this.myName});
+
+  String formatTime(String time) {
+    String formatted = '';
+    int? parsedHour = int.tryParse(time.substring(6, 8));
+    //ONEDAY handle more gracefully
+    int hour = parsedHour != null ? parsedHour : 0;
+    late String meridian;
+    if (hour > 12) {
+      hour -= 12;
+      meridian = "pm";
+    } else {
+      meridian = 'am';
+    }
+    String minutes = time.substring(9);
+    String date = time.substring(0, 5);
+    String day = date.substring(3);
+    int? monthParsed = int.tryParse(date.substring(0, 2));
+    int monthNum = monthParsed != null ? monthParsed : 0;
+    List<String> months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    late String suffix;
+    if (day.substring(1) == '1') {
+      suffix = 'st';
+    } else if (day.substring(1) == '2') {
+      suffix = 'nd';
+    } else if (day.substring(1) == '3') {
+      suffix = 'rd';
+    } else {
+      suffix = 'th';
+    }
+    date = day + suffix + " " + months[monthNum - 1];
+    formatted = hour.toString() + ":" + minutes + meridian + "  (" + date + ")";
+    return formatted;
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: _firestore
-          //TODO add proper stream
           .collection('chats')
-          // .orderBy('ts', descending: true)
+          .doc(chatID)
+          .collection('messages')
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -148,30 +202,37 @@ class MessageStream extends StatelessWidget {
           return Container();
         } else {
           hideLoadingDialog();
-          final messages = snapshot.data!.docs;
-          print(loggedInUser!.displayName);
-          print(loggedInUser!.uid);
+          final reverseMessages = snapshot.data!.docs;
+          final messages = [];
+          for (var message in reverseMessages.reversed) {
+            messages.add(message);
+            //ONEDAY there seems to be no better way of doing this in Dart :0
+          }
           List<MessageBubble> messageBubbles = [];
-          //TODO only get messages for current contact (IN DB, NOT LOCALLY)
           for (var message in messages) {
             final data = message.data();
-            //TODO change to chats(two names in array)>messages>(sender,text,time)
-            final messageText = 'Filler'; //message.data()['text'];
-            final messageSender = 'Filler2'; //message.data()['sender'];
-            final Timestamp messageTime = Timestamp.now(); //filler
-            //message.data()['ts'];
-
-            final currentUser = loggedInUser!.email;
+            final messageText = message.data()['text'];
+            final messageSender = message.data()['sender'];
+            int? seconds = int.tryParse(message.id);
+            late final Timestamp messageTime;
+            if (seconds != null) {
+              messageTime = Timestamp(seconds, 0);
+            } else {
+              messageTime = Timestamp(0, 0); //ONEDAY handle more gracefully
+            }
 
             final messageBubble = MessageBubble(
               text: messageText,
               sender: messageSender,
-              time: messageTime.toDate().toString().substring(5, 16),
-              isMe: (currentUser == messageSender),
+              time: formatTime(
+                messageTime.toDate().toString().substring(5, 16),
+              ),
+              isMe: (myName == messageSender),
             );
 
             messageBubbles.add(messageBubble);
           }
+
           return Expanded(
             child: ListView(
               reverse: true,
@@ -208,13 +269,13 @@ class MessageBubble extends StatelessWidget {
         crossAxisAlignment:
             isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
-          Text(
-            '$sender',
-            style: TextStyle(
-              fontSize: 12.0,
-              color: Colors.black54,
-            ),
-          ),
+          // Text(
+          //   '$sender',
+          //   style: TextStyle(
+          //     fontSize: 12.0,
+          //     color: Colors.black54,
+          //   ),
+          // ),
           Material(
             elevation: 5.0,
             borderRadius: BorderRadius.only(
@@ -223,7 +284,7 @@ class MessageBubble extends StatelessWidget {
               bottomLeft: Radius.circular(30.0),
               topLeft: isMe ? Radius.circular(30.0) : Radius.zero,
             ),
-            color: isMe ? Colors.lightGreenAccent : Colors.white,
+            color: isMe ? Colors.green[800] : Colors.white,
             child: Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 10.0,

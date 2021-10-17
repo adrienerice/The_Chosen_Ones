@@ -124,14 +124,21 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 var chats = snapshot.data!.docs;
                 for (var chat in chats) {
                   //ONEDAY this doesn't seem secure! Firestore rules are hard :(
-                  chatIDs.add(chat.id);
-                  print(chat.data());
-                  if (!contactNames.contains(['nameB']) &&
-                      !contactNames.contains(['nameA'])) {
-                    if (chat['nameA'] == _fullname) {
-                      contactNames.add(chat['nameB']);
-                    } else if (chat['nameB'] == _fullname) {
-                      contactNames.add(chat['nameA']);
+                  print(chat.data().toString() + _fullname);
+                  //check if the chat id contains my uid
+                  //(which it should if I'm in it)
+                  if (chat.id.contains(myUID)) {
+                    chatIDs.add(chat.id);
+                    //check if the name has already been added
+                    //(probably unnecessary)
+                    if (!contactNames.contains(chat['nameB']) &&
+                        !contactNames.contains(chat['nameA'])) {
+                      //add the name that isn't my _fullname
+                      if (chat['nameA'] == _fullname) {
+                        contactNames.add(chat['nameB']);
+                      } else if (chat['nameB'] == _fullname) {
+                        contactNames.add(chat['nameA']);
+                      }
                     }
                   }
                 }
