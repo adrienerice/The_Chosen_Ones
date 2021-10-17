@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:is_now_good/model/user_details.dart';
 import 'package:load/load.dart';
+import 'package:provider/provider.dart';
 import '/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,7 +30,6 @@ class _ChatScreenState extends State<ChatScreen> {
   //the emails of current user and user to chat with, sorted
   String chatID = '';
   String contactName = '⚡️Chat';
-  String myName = '';
 
   @override
   void initState() {
@@ -54,11 +55,12 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     if (ModalRoute.of(context) != null) {
-      chatID = ModalRoute.of(context)!.settings.arguments as String;
+      var contact = ModalRoute.of(context)!.settings.arguments as List<String>;
+      chatID = contact[0];
+      contactName = contact[1];
     } else {
       contactName = 'problem';
       chatID = 'problem'; //ONEDAY handle more gracefully
-      myName = 'problem';
     }
 
     // contactName = _auth.
@@ -72,7 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            MessageStream(chatID: chatID, myName: myName),
+            MessageStream(chatID: chatID),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -90,31 +92,35 @@ class _ChatScreenState extends State<ChatScreen> {
                       decoration: kMessageTextFieldDecoration,
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      //Implement send functionality.
-                      if (messageText != "") {
-                        messageTextController.clear();
-                        String now = Timestamp.now().seconds.toString();
-                        _firestore
-                            .collection('chats')
-                            .doc(chatID)
-                            .collection('messages')
-                            .doc(now)
-                            .set(
-                          {
-                            'sender': myName,
-                            'text': messageText,
-                            'audio_notification': true, //TODO ask user
-                            'visual_notification': true,
-                          },
-                        );
-                      }
+                  Consumer<UserDetails>(
+                    builder: (context, userDetails, child) {
+                      return TextButton(
+                        onPressed: () {
+                          //Implement send functionality.
+                          if (messageText != "") {
+                            messageTextController.clear();
+                            String now = Timestamp.now().seconds.toString();
+                            _firestore
+                                .collection('chats')
+                                .doc(chatID)
+                                .collection('messages')
+                                .doc(now)
+                                .set(
+                              {
+                                'sender': userDetails.userFullName,
+                                'text': messageText,
+                                'audio_notification': true, //TODO ask user
+                                'visual_notification': true,
+                              },
+                            );
+                          }
+                        },
+                        child: Text(
+                          'Send',
+                          style: kSendButtonTextStyle,
+                        ),
+                      );
                     },
-                    child: Text(
-                      'Send',
-                      style: kSendButtonTextStyle,
-                    ),
                   ),
                 ],
               ),
@@ -128,64 +134,68 @@ class _ChatScreenState extends State<ChatScreen> {
 
 class MessageStream extends StatelessWidget {
   late final String chatID;
-  late final String myName;
 
-  MessageStream({required this.chatID, required this.myName});
+  MessageStream({required this.chatID});
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-      stream: _firestore
-          .collection('chats')
-          .doc(chatID)
-          .collection('messages')
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          showLoadingDialog();
-          return Container();
-        } else {
-          hideLoadingDialog();
-          final reverseMessages = snapshot.data!.docs;
-          final messages = [];
-          for (var message in reverseMessages.reversed) {
-            messages.add(message);
-            //ONEDAY there seems to be no better way of doing this in Dart :0
-          }
-          List<MessageBubble> messageBubbles = [];
-          for (var message in messages) {
-            final data = message.data();
-            final messageText = message.data()['text'];
-            final messageSender = message.data()['sender'];
-            int? seconds = int.tryParse(message.id);
-            late final Timestamp messageTime;
-            if (seconds != null) {
-              messageTime = Timestamp(seconds, 0);
+    return Consumer<UserDetails>(
+      builder: (context, userDetails, child) {
+        return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: _firestore
+              .collection('chats')
+              .doc(chatID)
+              .collection('messages')
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              showLoadingDialog();
+              return Container();
             } else {
-              messageTime = Timestamp(0, 0); //ONEDAY handle more gracefully
+              hideLoadingDialog();
+              final reverseMessages = snapshot.data!.docs;
+              final messages = [];
+              for (var message in reverseMessages.reversed) {
+                messages.add(message);
+                //ONEDAY there seems to be no better way of doing this in Dart :0
+              }
+              List<MessageBubble> messageBubbles = [];
+              for (var message in messages) {
+                final data = message.data();
+                final messageText = message.data()['text'];
+                final messageSender = message.data()['sender'];
+                int? seconds = int.tryParse(message.id);
+                late final Timestamp messageTime;
+                if (seconds != null) {
+                  messageTime = Timestamp(seconds, 0);
+                } else {
+                  messageTime = Timestamp(0, 0); //ONEDAY handle more gracefully
+                }
+                List<String> date_and_time =
+                    getFormattedDateAndTime(messageTime);
+                final messageBubble = MessageBubble(
+                  text: messageText,
+                  sender: messageSender,
+                  date_and_time: date_and_time,
+                  isMe: (userDetails.userFullName == messageSender),
+                );
+
+                messageBubbles.add(messageBubble);
+              }
+
+              return Expanded(
+                child: ListView(
+                  reverse: true,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.0,
+                    vertical: 20.0,
+                  ),
+                  children: messageBubbles,
+                ),
+              );
             }
-            List<String> date_and_time = getFormattedDateAndTime(messageTime);
-            final messageBubble = MessageBubble(
-              text: messageText,
-              sender: messageSender,
-              date_and_time: date_and_time,
-              isMe: (myName == messageSender),
-            );
-
-            messageBubbles.add(messageBubble);
-          }
-
-          return Expanded(
-            child: ListView(
-              reverse: true,
-              padding: EdgeInsets.symmetric(
-                horizontal: 10.0,
-                vertical: 20.0,
-              ),
-              children: messageBubbles,
-            ),
-          );
-        }
+          },
+        );
       },
     );
   }

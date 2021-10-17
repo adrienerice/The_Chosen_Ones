@@ -90,8 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     print(e);
                     errorMessage = e.toString();
                   }
-                  Navigator.pop(context);
                   hideLoadingDialog();
+                  Navigator.pop(context);
                 },
               ),
               Text(errorMessage),

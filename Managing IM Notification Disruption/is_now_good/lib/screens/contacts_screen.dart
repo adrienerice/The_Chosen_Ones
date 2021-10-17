@@ -161,7 +161,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
                             Navigator.pushNamed(
                               context,
                               ChatScreen.id,
-                              arguments: chatIDs[i] as String,
+                              arguments: [
+                                chatIDs[i] as String,
+                                contactNames[i] as String
+                              ],
                             );
                           },
                           child: ListTile(
