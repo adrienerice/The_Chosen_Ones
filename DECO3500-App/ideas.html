@@ -2,9 +2,101 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ideas</title>
+    <title>Weather App - JavaScript</title>
+    <link rel="stylesheet" href="font/Rimouski.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="menu-container">
+    <div class="menu-title">
+        <p>Menu</p>
+    </div>
+    <a href="index.html">
+        <button type="button" class="button">
+            <span class="button__text">Home</span>
+            <span class="button__icon">
+                <img src="icons/energy_use.png" alt="">
+            </span>
+        </button>
+    </a>
+    <a href="ideas.html">
+        <button type="buttonTwo" class="buttonTwo">
+            <span class="button__textTwo">Ideas</span>
+            <span class="button__iconTwo">
+                <img src="icons/107788.png" alt="">
+            </span>
+        </button>
+    </a>
+    <a href="statistics.html">
+        <button type="buttonThree" class="buttonThree">
+            <span class="button__textThree">Statistics</span>
+            <span class="button__iconThree">
+                <img src="icons/statistics.png" alt="">
+            </span>
+        </button>
+    </a>
+    <a href="settings.html">
+        <button type="buttonFour" class="buttonFour">
+            <span class="button__textFour">Settings</span>
+            <span class="button__iconFour">
+                <img src="icons/settings.png" alt="">
+            </span>
+        </button>
+    </a>
+</div>
+<div class="ideas-container">
+    <div class="ideas-title">
+        <p>Ideas</p>
+    </div>
+    <button id="ideabutton1" onclick="myideaFunction()">
+        <p>Collaborative options if you plan on cooking:</p></button>
+    <p id="ideademo"></p>
+    <script>
+        function myideaFunction() {
+        document.getElementById("ideademo").innerHTML = `<img src="icons/Cooking-Appliance-Use.png"/>`;
+        }
+    </script>
+    <button id="ideabutton2" onclick="myideaFunction2()">
+        <p>If the outside conditions are currently sunny:</p></button>
+    <p id="ideademo2"></p>
+    <script>
+        function myideaFunction2() {
+        document.getElementById("ideademo2").innerHTML = `<img src="icons/Dryer-Use-Image.png"/>`;
+        }
+    </script>
+    <button id="ideabutton3" onclick="myideaFunction3()">
+        <p>If the outside temperature is below 20°C:</p></button>
+    <p id="ideademo3"></p>
+    <script>
+        function myideaFunction3() {
+        document.getElementById("ideademo3").innerHTML = `<img src="icons/Fan-Use.png"/>`;
+        }
+    </script>
+    <button id="ideabutton4" onclick="myideaFunction4()">
+        <p>If the outside temperature is below 25°C:</p></button>
+    <p id="ideademo4"></p>
+    <script>
+        function myideaFunction4() {
+        document.getElementById("ideademo4").innerHTML = `<img src="icons/Home-Cooling.png"/>`;
+        }
+    </script>
+    <button id="ideabutton5" onclick="myideaFunction5()">
+        <p>If there is sufficient natural daylight available:</p></button>
+    <p id="ideademo5"></p>
+    <script>
+        function myideaFunction5() {
+        document.getElementById("ideademo5").innerHTML = `<img src="icons/Light-Use.png"/>`;
+        }
+    </script>
+    <button id="ideabutton6" onclick="myideaFunction6()">
+        <p>Washing machine settings for energy efficiency:</p></button>
+    <p id="ideademo6"></p>
+    <script>
+        function myideaFunction6() {
+        document.getElementById("ideademo6").innerHTML = `<img src="icons/Water-Heating.png"/>`;
+        }
+    </script>
+</div>
 
 </body>
 </html>

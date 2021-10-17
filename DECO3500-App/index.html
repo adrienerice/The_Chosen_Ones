@@ -35,7 +35,7 @@
             </span>
         </button>
     </a>
-    <a href="ideas.html">
+    <a href="settings.html">
         <button type="buttonFour" class="buttonFour">
             <span class="button__textFour">Settings</span>
             <span class="button__iconFour">
@@ -68,46 +68,36 @@
     <div class="ideas-title">
         <p>Ideas</p>
     </div>
-    <button id="ideabutton1" onclick="myideaFunction()">Are all household members home?</button>
-    <p id="ideademo"></p>
-    <script>
-        function myideaFunction() {
-        document.getElementById("ideademo").innerHTML = `<img src="icons/Cooking-Appliance-Use.png"/>`;
-        }
-    </script>
-    <button id="ideabutton2" onclick="myideaFunction2()">Is it currently sunny conditions?</button>
+    <button id="ideabutton2" onclick="myideaFunction2()">
+        <p>If the outside conditions are currently sunny:</p></button>
     <p id="ideademo2"></p>
     <script>
         function myideaFunction2() {
         document.getElementById("ideademo2").innerHTML = `<img src="icons/Dryer-Use-Image.png"/>`;
         }
     </script>
-    <button id="ideabutton3" onclick="myideaFunction3()">Is the current temperature below 20°C?</button>
+    <button id="ideabutton3" onclick="myideaFunction3()">
+        <p>If the outside temperature is below 20°C:</p></button>
     <p id="ideademo3"></p>
     <script>
         function myideaFunction3() {
         document.getElementById("ideademo3").innerHTML = `<img src="icons/Fan-Use.png"/>`;
         }
     </script>
-    <button id="ideabutton4" onclick="myideaFunction4()">Is the current temperature below 25°C?</button>
+    <button id="ideabutton4" onclick="myideaFunction4()">
+        <p>If the outside temperature is below 25°C:</p></button>
     <p id="ideademo4"></p>
     <script>
         function myideaFunction4() {
         document.getElementById("ideademo4").innerHTML = `<img src="icons/Home-Cooling.png"/>`;
         }
     </script>
-    <button id="ideabutton5" onclick="myideaFunction5()">Is there currently sufficient natural sunlight available?</button>
+    <button id="ideabutton5" onclick="myideaFunction5()">
+        <p>If there is sufficient natural daylight available:</p></button>
     <p id="ideademo5"></p>
     <script>
         function myideaFunction5() {
         document.getElementById("ideademo5").innerHTML = `<img src="icons/Light-Use.png"/>`;
-        }
-    </script>
-    <button id="ideabutton6" onclick="myideaFunction6()">Efficient washing machine settings</button>
-    <p id="ideademo6"></p>
-    <script>
-        function myideaFunction6() {
-        document.getElementById("ideademo6").innerHTML = `<img src="icons/Water-Heating.png"/>`;
         }
     </script>
 </div>
