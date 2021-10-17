@@ -96,7 +96,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     builder: (context, userDetails, child) {
                       return TextButton(
                         onPressed: () {
-                          //Implement send functionality.
+                          //TODO tell user about status of recipient before send
+                          //TODO let user choose notification for recipient
+                          //TODO Notifications!
                           if (messageText != "") {
                             messageTextController.clear();
                             String now = Timestamp.now().seconds.toString();

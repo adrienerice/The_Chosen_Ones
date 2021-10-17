@@ -58,24 +58,27 @@ class _ContactsScreenState extends State<ContactsScreen> {
       ),
     );
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      appBar: AppBar(
         backgroundColor: Colors.green,
-        child: Icon(Icons.add, color: Colors.white),
-        onPressed: () async {
-          Navigator.pushNamed(context, AddContactScreen.id);
-          /** TODO THIS IS WHERE THE NOTIFICATION THING IS IT'S HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE 
+        title: Consumer<UserDetails>(
+          builder: (context, userDetails, child) {
+            return Text('${userDetails.userFullName}\'s Contacts');
+          },
+        ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              Navigator.pushNamed(context, AddContactScreen.id);
+              /** TODO THIS IS WHERE THE NOTIFICATION THING IS IT'S HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE 
               NotificationApi.showNotification(
                 title: 'Andrew Dwyer',
                 body: 'How was your trip yesterday?',
                 payload: 'you@you.you', //TODO add contact username here
               );*/
-        },
-      ),
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Consumer<UserDetails>(builder: (context, userDetails, child) {
-          return Text('Contacts for ${userDetails.userFullName}');
-        }),
+            },
+            icon: Icon(Icons.add, color: Colors.white),
+          )
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -198,6 +201,19 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   }
                 },
               ),
+              Consumer<UserDetails>(
+                builder: (context, userDetails, child) {
+                  return ListTile(
+                    tileColor: Status.getColourWithName(userDetails.status),
+                    enabled: false,
+                    title: Text(
+                      'Your Current Status',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                },
+              ),
             ],
           );
         },
@@ -240,39 +256,34 @@ class StatusBottomNavBar extends StatefulWidget {
 }
 
 class _StatusBottomNavBarState extends State<StatusBottomNavBar> {
+  int statusIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    int statusIndex = 0;
-    List<String> statuses = ['none', 'busy', 'maybe', 'free'];
-    List<IconData> statusIcons = [
-      Icons.circle_outlined,
-      Icons.do_not_disturb_on_outlined,
-      Icons.contact_support,
-      Icons.done,
-    ];
-    List<Color> statusColours = [
-      Colors.blueGrey,
-      Colors.red,
-      Colors.amber,
-      Colors.green,
-    ];
-
-    return BottomNavigationBar(
-      items: [
-        for (var i = 0; i < statuses.length; i++)
-          BottomNavigationBarItem(
-            label: statuses[i],
-            backgroundColor: statusColours[i],
-            icon: Icon(statusIcons[i]),
-          ),
-      ],
-      currentIndex: statusIndex,
-      selectedItemColor: Colors.black54,
-      onTap: (index) {
-        setState(() {
-          statusIndex = index;
-          //TODO update database with status
-        });
+    //TODO solve defaulting to none problem!
+    return Consumer<UserDetails>(
+      builder: (context, userDetails, child) {
+        return BottomNavigationBar(
+          items: [
+            for (var i = 0; i < Status.names.length; i++)
+              BottomNavigationBarItem(
+                label: Status.names[i],
+                backgroundColor: Status.colours[i],
+                icon: Icon(Status.icons[i]),
+              ),
+          ],
+          showUnselectedLabels: true,
+          currentIndex: statusIndex,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.black54,
+          onTap: (index) {
+            setState(() {
+              statusIndex = index;
+              userDetails.updateStatus(statusIndex);
+              //TODO update database with status
+            });
+          },
+        );
       },
     );
   }
