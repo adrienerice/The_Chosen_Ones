@@ -8,30 +8,41 @@
 </head>
 <body>
 <div class="menu-container">
-    <button type="button" class="button">
-        <span class="button__text">Home</span>
-        <span class="button__icon">
-            <img src="icons/energy_use.png" alt="">
-        </span>
-    </button>
-    <button type="buttonTwo" class="buttonTwo">
-        <span class="button__textTwo">Ideas</span>
-        <span class="button__iconTwo">
-            <img src="icons/107788.png" alt="">
-        </span>
-    </button>
-    <button type="buttonThree" class="buttonThree">
-    <span class="button__textThree">Statistics</span>
-    <span class="button__iconThree">
-        <img src="icons/statistics.png" alt="">
-  </span>
-</button>
-    <button type="buttonFour" class="buttonFour">
-        <span class="button__textFour">Settings</span>
-        <span class="button__iconFour">
-            <img src="icons/settings.png" alt="">
-        </span>
-    </button>
+    <div class="menu-title">
+        <p>Menu</p>
+    </div>
+    <a href="index.html">
+        <button type="button" class="button">
+            <span class="button__text">Home</span>
+            <span class="button__icon">
+                <img src="icons/energy_use.png" alt="">
+            </span>
+        </button>
+    </a>
+    <a href="ideas.html">
+        <button type="buttonTwo" class="buttonTwo">
+            <span class="button__textTwo">Ideas</span>
+            <span class="button__iconTwo">
+                <img src="icons/107788.png" alt="">
+            </span>
+        </button>
+    </a>
+    <a href="statistics.html">
+        <button type="buttonThree" class="buttonThree">
+            <span class="button__textThree">Statistics</span>
+            <span class="button__iconThree">
+                <img src="icons/statistics.png" alt="">
+            </span>
+        </button>
+    </a>
+    <a href="ideas.html">
+        <button type="buttonFour" class="buttonFour">
+            <span class="button__textFour">Settings</span>
+            <span class="button__iconFour">
+                <img src="icons/settings.png" alt="">
+            </span>
+        </button>
+    </a>
 </div>
 <div class="container">
     <div class="app-title">
@@ -53,62 +64,55 @@
         </div>
     </div>
 </div>
-    <div class="idea-container">
-        <button id="button1" onclick="myFunction()">Are all household members home?</button>
-        <p id = "demo"></p>
-        <script>
-        function myFunction() {
-        document.getElementById("demo").innerHTML = `<img src="icons/Cooking-Appliance-Use.png"/>`;
+<div class="ideas-container">
+    <div class="ideas-title">
+        <p>Ideas</p>
+    </div>
+    <button id="ideabutton1" onclick="myideaFunction()">Are all household members home?</button>
+    <p id="ideademo"></p>
+    <script>
+        function myideaFunction() {
+        document.getElementById("ideademo").innerHTML = `<img src="icons/Cooking-Appliance-Use.png"/>`;
         }
     </script>
-    </div>
-    <div class="ideaTwo-container">
-        <button id="button2" onclick="myFunctionTwo()">Is it 25°C or more and is it sunny conditions?</button>
-        <p id = "demoTwo"></p>
-        <script>
-        function myFunctionTwo() {
-        document.getElementById("demoTwo").innerHTML = `<img src="icons/Dryer-Use-Image.png"/>`;
+    <button id="ideabutton2" onclick="myideaFunction2()">Is it currently sunny conditions?</button>
+    <p id="ideademo2"></p>
+    <script>
+        function myideaFunction2() {
+        document.getElementById("ideademo2").innerHTML = `<img src="icons/Dryer-Use-Image.png"/>`;
         }
     </script>
-    </div>
-    <div class="ideaThree-container">
-        <button id="button3" onclick="myFunctionThree()">Is it 20°C or less?</button>
-        <p id = "demoThree"></p>
-        <script>
-        function myFunctionThree() {
-        document.getElementById("demoThree").innerHTML = `<img src="icons/Fan-Use.png"/>`;
+    <button id="ideabutton3" onclick="myideaFunction3()">Is the current temperature below 20°C?</button>
+    <p id="ideademo3"></p>
+    <script>
+        function myideaFunction3() {
+        document.getElementById("ideademo3").innerHTML = `<img src="icons/Fan-Use.png"/>`;
         }
     </script>
-    </div>
-    <div class="ideaFour-container">
-        <button id="button4" onclick="myFunctionFour()">Is it 25°C or less?</button>
-        <p id = "demoFour"></p>
-        <script>
-        function myFunctionFour() {
-        document.getElementById("demoFour").innerHTML = `<img src="icons/Home-Cooling.png"/>`;
+    <button id="ideabutton4" onclick="myideaFunction4()">Is the current temperature below 25°C?</button>
+    <p id="ideademo4"></p>
+    <script>
+        function myideaFunction4() {
+        document.getElementById("ideademo4").innerHTML = `<img src="icons/Home-Cooling.png"/>`;
         }
     </script>
-    </div>
-    <div class="ideaFive-container">
-        <button id="button5" onclick="myFunctionFive()">Is there currently sunny conditions?</button>
-        <p id = "demoFive"></p>
-        <script>
-        function myFunctionFive() {
-        document.getElementById("demoFive").innerHTML = `<img src="icons/Light-Use.png"/>`;
+    <button id="ideabutton5" onclick="myideaFunction5()">Is there currently sufficient natural sunlight available?</button>
+    <p id="ideademo5"></p>
+    <script>
+        function myideaFunction5() {
+        document.getElementById("ideademo5").innerHTML = `<img src="icons/Light-Use.png"/>`;
         }
     </script>
-    </div>
-    <div class="ideaSix-container">
-        <button id="button6" onclick="myFunctionSix()">If you used a hot cycle for the washing machine:</button>
-        <p id = "demoSix"></p>
-        <script>
-        function myFunctionSix() {
-        document.getElementById("demoSix").innerHTML = `<img src="icons/Water-Heating.png"/>`;
+    <button id="ideabutton6" onclick="myideaFunction6()">Efficient washing machine settings</button>
+    <p id="ideademo6"></p>
+    <script>
+        function myideaFunction6() {
+        document.getElementById("ideademo6").innerHTML = `<img src="icons/Water-Heating.png"/>`;
         }
     </script>
-    </div>
+</div>
 
-    <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
 
