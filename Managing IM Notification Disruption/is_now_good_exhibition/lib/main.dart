@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:is_now_good_exhibition/screens/response_screen.dart';
+import 'package:is_now_good_exhibition/screens/simulation_screen.dart';
 
 import 'package:provider/provider.dart';
 
@@ -25,7 +27,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final Future<FirebaseApp> _initialisation = Firebase.initializeApp();
+  // final Future<FirebaseApp> _initialisation = Firebase.initializeApp();
+  final Future _initialisation = Future.delayed(Duration(seconds: 1));
   String initialRoute = WelcomeScreen.id;
   @override
   Widget build(BuildContext context) {
@@ -52,10 +55,12 @@ class _MyAppState extends State<MyApp> {
               routes: {
                 WelcomeScreen.id: (context) => WelcomeScreen(),
                 ChatScreen.id: (context) => ChatScreen(),
-                LoginScreen.id: (context) => LoginScreen(),
-                RegistrationScreen.id: (context) => RegistrationScreen(),
+                // LoginScreen.id: (context) => LoginScreen(),
+                // RegistrationScreen.id: (context) => RegistrationScreen(),
                 ContactsScreen.id: (context) => ContactsScreen(),
                 AddContactScreen.id: (context) => AddContactScreen(),
+                SimulationScreen.id: (context) => SimulationScreen(),
+                ResponseScreen.id: (context) => ResponseScreen(),
               },
             ),
           );
@@ -77,6 +82,8 @@ class AuthStreamBuilder extends StatefulWidget {
 class _AuthStreamBuilderState extends State<AuthStreamBuilder> {
   @override
   Widget build(BuildContext context) {
+    return ContactsScreen();
+    /*
     final _auth = FirebaseAuth.instance;
     return StreamBuilder<User?>(
       stream: _auth.authStateChanges(),
@@ -93,6 +100,6 @@ class _AuthStreamBuilderState extends State<AuthStreamBuilder> {
           return WelcomeScreen();
         }
       },
-    );
+    );*/
   }
 }
