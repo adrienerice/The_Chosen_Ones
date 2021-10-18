@@ -53,7 +53,8 @@ class _AddContactScreenState extends State<AddContactScreen> {
                 text: 'Add Contact',
                 color: Colors.lightGreenAccent,
                 onPressed: () async {
-                  showLoadingDialog();
+                  final snackBar = SnackBar(content: Text('Loading...'));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   try {
                     //get their id
                     var users =
@@ -93,6 +94,15 @@ class _AddContactScreenState extends State<AddContactScreen> {
                         nameB = _contactsName;
                       }
                       //add chats document with chatID and names
+                      List<String> names = [
+                        userDetails.userFullName,
+                        _contactsName,
+                      ];
+                      names.sort();
+                      chatID = '';
+                      for (String name in names) {
+                        chatID += name;
+                      }
                       _firestore.collection('chats').doc(chatID).set({
                         'nameA': nameA,
                         'nameB': nameB,
@@ -114,7 +124,6 @@ class _AddContactScreenState extends State<AddContactScreen> {
                     print(e);
                     errorMessage = e.toString();
                   }
-                  hideLoadingDialog();
                 },
               );
             },

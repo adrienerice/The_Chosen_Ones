@@ -105,7 +105,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 text: 'Register',
                 color: Colors.greenAccent,
                 onPressed: () async {
-                  showLoadingDialog();
+                  final snackBar = SnackBar(content: Text('Loading...'));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   if (_fullname.length == 0) {
                     errorText = 'Please enter your full name';
                     return;
@@ -137,7 +138,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       errorText = e.toString();
                     });
                   }
-                  hideLoadingDialog();
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 },
               ),
               Text(errorText),

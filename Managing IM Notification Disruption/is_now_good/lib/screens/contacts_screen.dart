@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 
 import '/model/user_details.dart';
 
-import 'show_load_over_whole_screen.dart';
 import '/screens/chat_screen.dart';
 import '/screens/add_contact_screen.dart';
 import '/model/notification_api.dart';
@@ -86,21 +85,19 @@ class _ContactsScreenState extends State<ContactsScreen> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              child: Expanded(
-                child: Center(
-                  child: Consumer<UserDetails>(
-                    //ONEDAY figure out how to use 'child' properly
-                    builder: (context, userDetails, child) {
-                      return Text(
-                        'Your Email Address:\n' + userDetails.userEmail,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.white,
-                        ),
-                      );
-                    },
-                  ),
+              child: Center(
+                child: Consumer<UserDetails>(
+                  //ONEDAY figure out how to use 'child' properly
+                  builder: (context, userDetails, child) {
+                    return Text(
+                      'Your Email Address:\n' + userDetails.userEmail,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.white,
+                      ),
+                    );
+                  },
                 ),
               ),
               decoration: BoxDecoration(
@@ -131,12 +128,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 stream: _firestore.collection('chats').snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    showLoadingDialog();
                     return Column(
                       children: [addContactsHint],
                     );
                   } else {
-                    hideLoadingDialog();
                     var chats = snapshot.data!.docs;
                     Random rng = Random();
                     for (var chat in chats) {
@@ -238,32 +233,6 @@ class _ContactsScreenState extends State<ContactsScreen> {
   }
 }
 
-class CustomFutureBuilder extends StatefulWidget {
-  const CustomFutureBuilder({Key? key}) : super(key: key);
-
-  @override
-  _CustomFutureBuilderState createState() => _CustomFutureBuilderState();
-}
-
-class _CustomFutureBuilderState extends State<CustomFutureBuilder> {
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-      future: _firestore.collection('users').doc(loggedInUser!.uid).get(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          //hide loading dialog to solve global key issue
-          //(caused by using show without hide)
-          hideLoadingDialog();
-          return Container();
-        } else {
-          return ShowLoadOverWholeScreen();
-        }
-      },
-    );
-  }
-}
-
 class StatusBottomNavBar extends StatefulWidget {
   const StatusBottomNavBar({Key? key}) : super(key: key);
 
@@ -294,7 +263,6 @@ class _StatusBottomNavBarState extends State<StatusBottomNavBar> {
           onTap: (index) {
             setState(() {
               userDetails.updateStatus(index);
-              //TODO update database with status
             });
           },
         );

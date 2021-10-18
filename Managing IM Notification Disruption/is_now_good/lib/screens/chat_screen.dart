@@ -59,6 +59,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (ModalRoute.of(context) != null) {
       var contact = ModalRoute.of(context)!.settings.arguments as List<String>;
       chatID = contact[0];
+      // List<String> a = [contact[1], userD];
       contactName = contact[1];
     } else {
       contactName = 'problem';
@@ -76,7 +77,17 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            MessageStream(chatID: chatID),
+            Consumer<UserDetails>(
+              builder: (context, userDetails, child) {
+                chatID = '';
+                var names = [contactName, userDetails.userFullName];
+                names.sort();
+                for (var name in names) {
+                  chatID += name;
+                }
+                return MessageStream(chatID: chatID);
+              },
+            ),
             NotificationOptionBar(),
             // Container(
             //   decoration: kMessageContainerDecoration, //TODO alter decoration
@@ -121,6 +132,12 @@ class _ChatScreenState extends State<ChatScreen> {
                           if (messageText != "") {
                             messageTextController.clear();
                             String now = Timestamp.now().seconds.toString();
+                            chatID = '';
+                            var names = [contactName, userDetails.userFullName];
+                            names.sort();
+                            for (var name in names) {
+                              chatID += name;
+                            }
                             _firestore
                                 .collection('chats')
                                 .doc(chatID)
@@ -170,10 +187,11 @@ class MessageStream extends StatelessWidget {
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              showLoadingDialog();
+              final snackBar = SnackBar(content: Text('Loading...'));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
               return Container();
             } else {
-              hideLoadingDialog();
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
               final reverseMessages = snapshot.data!.docs;
               final messages = [];
               for (var message in reverseMessages.reversed) {

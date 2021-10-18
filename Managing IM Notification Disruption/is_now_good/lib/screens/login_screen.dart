@@ -79,7 +79,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 text: 'Log In',
                 color: Colors.lightGreenAccent,
                 onPressed: () async {
-                  showLoadingDialog();
+                  final snackBar = SnackBar(content: Text('Loading...'));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   try {
                     final user = await _auth.signInWithEmailAndPassword(
                       email: _email,
@@ -90,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     print(e);
                     errorMessage = e.toString();
                   }
-                  hideLoadingDialog();
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
                   Navigator.pop(context);
                 },
               ),

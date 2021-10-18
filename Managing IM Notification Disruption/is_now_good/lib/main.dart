@@ -8,7 +8,6 @@ import 'package:load/load.dart';
 import 'package:provider/provider.dart';
 
 import '/screens/add_contact_screen.dart';
-import 'screens/show_load_over_whole_screen.dart';
 import '/screens/welcome_screen.dart';
 import '/screens/login_screen.dart';
 import '/screens/contacts_screen.dart';
@@ -37,9 +36,6 @@ class _MyAppState extends State<MyApp> {
     return FutureBuilder(
       future: _initialisation,
       builder: (context, snapshot) {
-        //hide loading dialog to solve global key issue
-        //(caused by using show without hide)
-        hideLoadingDialog();
         // Check for errors
         if (snapshot.hasError) {
           return const MaterialApp(
@@ -69,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           );
         }
         // Otherwise, show something whilst waiting for initialisation to complete.
-        return const ShowLoadOverWholeScreen();
+        return const MaterialApp();
       },
     );
   }
