@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:is_now_good/constants.dart';
 import 'package:load/load.dart';
 import 'package:provider/provider.dart';
 
@@ -206,10 +207,25 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   return ListTile(
                     tileColor: Status.getColourWithName(userDetails.status),
                     enabled: false,
-                    title: Text(
-                      'Your Current Status',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
+                    title: Column(
+                      children: [
+                        Text(
+                          'My Status',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                          ),
+                        ),
+                        Text(
+                          'Uploaded '
+                          '${(userDetails.statusUpdateAt == null) ? 'loading...' : getFormattedDateAndTime(
+                              userDetails.statusUpdateAt!,
+                              withSeconds: true,
+                            ).reversed}',
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   );
                 },
@@ -256,11 +272,10 @@ class StatusBottomNavBar extends StatefulWidget {
 }
 
 class _StatusBottomNavBarState extends State<StatusBottomNavBar> {
-  int statusIndex = 0;
+  // int statusIndex = 0; shouldn't be needed, replaced with userDetails.status
 
   @override
   Widget build(BuildContext context) {
-    //TODO solve defaulting to none problem!
     return Consumer<UserDetails>(
       builder: (context, userDetails, child) {
         return BottomNavigationBar(
@@ -273,13 +288,12 @@ class _StatusBottomNavBarState extends State<StatusBottomNavBar> {
               ),
           ],
           showUnselectedLabels: true,
-          currentIndex: statusIndex,
+          currentIndex: Status.names.indexOf(userDetails.status),
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.black54,
           onTap: (index) {
             setState(() {
-              statusIndex = index;
-              userDetails.updateStatus(statusIndex);
+              userDetails.updateStatus(index);
               //TODO update database with status
             });
           },
@@ -288,3 +302,50 @@ class _StatusBottomNavBarState extends State<StatusBottomNavBar> {
     );
   }
 }
+/*
+return Consumer<UserDetails>(
+      builder: (context, userDetails, child) {
+        return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            future:
+                _firestore.collection('statuses').doc(userDetails.uid).get(),
+            builder: (context, snapshot) {
+              if (snapshot.data != null) {
+                var statusDoc = snapshot.data!;
+                var status = statusDoc['status'];
+                statusIndex = Status.names.indexOf(status);
+                return BottomNavigationBar(
+                  items: [
+                    for (var i = 0; i < Status.names.length; i++)
+                      BottomNavigationBarItem(
+                        label: Status.names[i],
+                        backgroundColor: Status.colours[i],
+                        icon: Icon(Status.icons[i]),
+                      ),
+                  ],
+                  showUnselectedLabels: true,
+                  currentIndex: statusIndex,
+                  selectedItemColor: Colors.white,
+                  unselectedItemColor: Colors.black54,
+                  onTap: (index) {
+                    setState(() {
+                      statusIndex = index;
+                      userDetails.updateStatus(statusIndex);
+                      //TODO update database with status
+                    });
+                  },
+                );
+              } else {
+                print('Loading your current status');
+                return Container(
+                  child: Center(
+                    child: Text(
+                      'Loading your current status',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+            });
+      },
+    );
+ */

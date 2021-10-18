@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:is_now_good/model/user_details.dart';
 
 import 'package:load/load.dart';
 
@@ -117,6 +118,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       _firestore.collection('users').doc(user.uid).set({
                         'email': _email,
                         'fullname': _fullname,
+                      });
+                      //ONEDAY this could probably be just made defaults in
+                      // userDetails and only added to db on first statusUpdate
+                      _firestore.collection('statuses').doc(user.uid).set({
+                        'name': _fullname,
+                        'status': Status.defaultStatus,
+                        'time': Timestamp.now(),
                       });
                       Navigator.pushNamed(context, ContactsScreen.id);
                       print(' ----------------- REGISTERED ----------------- ');

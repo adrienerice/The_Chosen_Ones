@@ -36,10 +36,13 @@ const kTextFieldDecoration = InputDecoration(
   ),
 );
 
-List<String> getFormattedDateAndTime(Timestamp ts) {
+List<String> getFormattedDateAndTime(Timestamp ts, {bool withSeconds = false}) {
+  String test = ts.toDate().toString();
   String rawTime = ts.toDate().toString().substring(5, 16);
-  int? parsedHour = int.tryParse(rawTime.substring(6, 8));
+
   //ONEDAY handle more gracefully
+  // Get hour of day and check for AM or PM
+  int? parsedHour = int.tryParse(rawTime.substring(6, 8));
   int hour = parsedHour != null ? parsedHour : 0;
   late String meridian;
   if (hour > 12) {
@@ -48,6 +51,8 @@ List<String> getFormattedDateAndTime(Timestamp ts) {
   } else {
     meridian = 'am';
   }
+
+  String seconds = ts.toDate().toString().substring(17, 19);
   String minutes = rawTime.substring(9);
   String date = rawTime.substring(0, 5);
   String day = date.substring(3);
@@ -78,6 +83,10 @@ List<String> getFormattedDateAndTime(Timestamp ts) {
     suffix = 'th';
   }
   date = day + suffix + " " + months[monthNum - 1];
-  String time = hour.toString() + ":" + minutes + meridian;
+  String time = hour.toString() + ":" + minutes;
+  if (withSeconds) {
+    time += ":" + seconds;
+  }
+  time += meridian;
   return [date, time];
 }
