@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:is_now_good/model/user_details.dart';
 import 'package:load/load.dart';
 import 'package:provider/provider.dart';
 import '/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:is_now_good/components/my_flutter_app_icons.dart';
 
 final _firestore = FirebaseFirestore.instance;
 User? loggedInUser; //ONEDAY move to Provider
@@ -75,6 +77,23 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             MessageStream(chatID: chatID),
+            NotificationOptionBar(),
+            // Container(
+            //   decoration: kMessageContainerDecoration, //TODO alter decoration
+            //   child: ListTile(
+            //     tileColor: Colors.green,
+            //     onTap: () {
+            //       //ask for status
+            //     },
+            // trailing: const CircleAvatar(
+            //   backgroundImage: ResizeImage(
+            //     AssetImage('images/logo.png'),
+            //     width: 40,
+            //     height: 40,
+            //   ),
+            // ),
+            //   ),
+            // ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -264,4 +283,53 @@ class MessageBubble extends StatelessWidget {
       ),
     );
   }
+}
+
+class NotificationOptionBar extends StatefulWidget {
+  const NotificationOptionBar({Key? key}) : super(key: key);
+
+  @override
+  _NotificationOptionBarState createState() => _NotificationOptionBarState();
+}
+
+class _NotificationOptionBarState extends State<NotificationOptionBar> {
+  int currentIndex = Notification.defaultLabelIndex;
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      onTap: (index) {
+        setState(() {
+          currentIndex = index;
+        });
+      },
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.black54,
+      items: [
+        for (int i = 0; i < Notification.labels.length; i++)
+          BottomNavigationBarItem(
+            backgroundColor: Notification.colours[i],
+            label: Notification.labels[i],
+            icon: Icon(Notification.icons[i]),
+          ),
+      ],
+    );
+  }
+}
+
+class Notification {
+  static List<IconData> icons = [
+    FontAwesomeIcons.ghost,
+    Icons.volume_off,
+    Icons.volume_up,
+    CustomIcons.isNowGood,
+  ];
+  static List<Color> colours = [
+    Colors.grey,
+    Colors.blueGrey,
+    Colors.blue,
+    Colors.green,
+  ];
+  static int defaultLabelIndex = 2;
+  static List<String> labels = ['None', 'Silent', 'Normal', 'Is Now Good?'];
 }

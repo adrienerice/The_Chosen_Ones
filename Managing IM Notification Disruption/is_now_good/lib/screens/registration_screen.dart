@@ -28,7 +28,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return LoadingProvider(
-      themeData: LoadingThemeData(),
+      themeData: LoadingThemeData(
+        backgroundColor: Colors.blue,
+      ),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
@@ -126,7 +128,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         'status': Status.defaultStatus,
                         'time': Timestamp.now(),
                       });
-                      Navigator.pushNamed(context, ContactsScreen.id);
+                      // Navigator.pushNamed(context, ContactsScreen.id);
                       print(' ----------------- REGISTERED ----------------- ');
                     }
                   } catch (e) {

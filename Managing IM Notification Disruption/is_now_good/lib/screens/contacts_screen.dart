@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import '/model/user_details.dart';
 
-import '/screens/loading_screen.dart';
+import 'show_load_over_whole_screen.dart';
 import '/screens/chat_screen.dart';
 import '/screens/add_contact_screen.dart';
 import '/model/notification_api.dart';
@@ -114,6 +114,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
               ),
               onPressed: () {
                 _auth.signOut();
+                // Navigator.pop(context);
                 print(' ----------------- LOGGED OUT ----------------- ');
               },
             ),
@@ -218,8 +219,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                           ),
                         ),
                         Text(
-                          'Uploaded '
-                          '${(userDetails.statusUpdateAt == null) ? 'loading...' : getFormattedDateAndTime(
+                          'Uploaded ${(userDetails.statusUpdateAt == null) ? '' : getFormattedDateAndTime(
                               userDetails.statusUpdateAt!,
                               withSeconds: true,
                             ).reversed}',
@@ -257,7 +257,7 @@ class _CustomFutureBuilderState extends State<CustomFutureBuilder> {
           hideLoadingDialog();
           return Container();
         } else {
-          return LoadingScreen();
+          return ShowLoadOverWholeScreen();
         }
       },
     );
@@ -302,50 +302,3 @@ class _StatusBottomNavBarState extends State<StatusBottomNavBar> {
     );
   }
 }
-/*
-return Consumer<UserDetails>(
-      builder: (context, userDetails, child) {
-        return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-            future:
-                _firestore.collection('statuses').doc(userDetails.uid).get(),
-            builder: (context, snapshot) {
-              if (snapshot.data != null) {
-                var statusDoc = snapshot.data!;
-                var status = statusDoc['status'];
-                statusIndex = Status.names.indexOf(status);
-                return BottomNavigationBar(
-                  items: [
-                    for (var i = 0; i < Status.names.length; i++)
-                      BottomNavigationBarItem(
-                        label: Status.names[i],
-                        backgroundColor: Status.colours[i],
-                        icon: Icon(Status.icons[i]),
-                      ),
-                  ],
-                  showUnselectedLabels: true,
-                  currentIndex: statusIndex,
-                  selectedItemColor: Colors.white,
-                  unselectedItemColor: Colors.black54,
-                  onTap: (index) {
-                    setState(() {
-                      statusIndex = index;
-                      userDetails.updateStatus(statusIndex);
-                      //TODO update database with status
-                    });
-                  },
-                );
-              } else {
-                print('Loading your current status');
-                return Container(
-                  child: Center(
-                    child: Text(
-                      'Loading your current status',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                );
-              }
-            });
-      },
-    );
- */

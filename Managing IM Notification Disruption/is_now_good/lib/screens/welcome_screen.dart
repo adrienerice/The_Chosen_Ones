@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:load/load.dart';
 import '/components/rounded_button.dart';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -62,29 +63,26 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Hero(
-                  tag: 'logo',
-                  child: Container(
-                    child: Image.asset('images/logo.png'),
-                    height: 60.0,
-                    //height: controller.value,
-                    //height: animation.value * 100.0,
+            Hero(
+              tag: 'logo',
+              child: Container(
+                child: Image.asset('images/logo.png'),
+                height: 60.0,
+                //height: controller.value,
+                //height: animation.value * 100.0,
+              ),
+            ),
+            AnimatedTextKit(
+              animatedTexts: [
+                TypewriterAnimatedText(
+                  ' Is Now Good?',
+                  textAlign: TextAlign.center,
+                  //'${controller.value.toInt()}%',
+                  textStyle: const TextStyle(
+                    fontSize: 45.0,
+                    fontWeight: FontWeight.w900,
                   ),
-                ),
-                AnimatedTextKit(
-                  animatedTexts: [
-                    TypewriterAnimatedText(
-                      'Is Now Good',
-                      //'${controller.value.toInt()}%',
-                      textStyle: const TextStyle(
-                        fontSize: 45.0,
-                        fontWeight: FontWeight.w900,
-                      ),
-                      speed: const Duration(milliseconds: 150),
-                    ),
-                  ],
+                  speed: const Duration(milliseconds: 150),
                 ),
               ],
             ),

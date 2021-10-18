@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 
-class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({Key? key}) : super(key: key);
+/**
+ * FOR THE LOVE OF GOD, DO NOT CALL THIS WIDGET LoadingScreen() OR IT BREAKS EVERYTHING
+ */
+class ShowLoadOverWholeScreen extends StatefulWidget {
+  const ShowLoadOverWholeScreen({Key? key}) : super(key: key);
 
   @override
-  _LoadingScreenState createState() => _LoadingScreenState();
+  _ShowLoadOverWholeScreenState createState() =>
+      _ShowLoadOverWholeScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class _ShowLoadOverWholeScreenState extends State<ShowLoadOverWholeScreen> {
   @override
   void initState() {
     super.initState();
     // Show loading once, after widget has loaded. May not be necessary.
     if (WidgetsBinding.instance != null) {
       WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-        showLoadingDialog();
+        showLoadingDialog(); //MAybe the problem was I was calling this inside the provider AND inside the loading screen??
       });
     }
   }

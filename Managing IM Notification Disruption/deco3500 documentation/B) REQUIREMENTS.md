@@ -53,3 +53,17 @@ having a screen specifically for viewing which statuses are set for who, having 
 						
     - then user controlled notification options (sound, sight)
 
+
+Trying to resolve the synchronous/asynchronous ambiguity of Instant Messaging. 
+Helping users to answer the question: "Is the other person willing and able to have a synchronous conversation?""
+Meeting the user need "I don't want the other person to think I am willing and able to have a synchronous conversation when I am not"
+Availability indicators and notifications need to reflect this willingness and capability (or not) to have a synchronous conversation.
+Thus, the question "Is now good?"
+And the replies, Yes, No, Sorta.
+And the option for "Now is not good for me" but more implicit than that.
+
+Hey, is now good?
+phone: they said they were busy half an hour ago, would you like to ask them anyway?
+Yes.
+them: I am still busy. 
+
