@@ -32,7 +32,7 @@ class UserDetails with ChangeNotifier {
   int minuteSpecificityMax = 30;
   int minuteSpecificityMin = 5;
   Map<String, List<Message>> messages = {
-    'Alice Mert-None': [
+    'Alice Mertone': [
       Message(
         time: getNow(),
         sender: 'Joe Swanson',
@@ -41,47 +41,47 @@ class UserDetails with ChangeNotifier {
       ),
       Message(
         time: getNow(),
-        sender: 'Alice Mert-None',
+        sender: 'Alice Mertone',
         text: 'Hi',
         // colour: Notifier.colours[0],
       ),
     ],
-    'BusyBob Odenkirk': [
+    'Bob Odenkirk': [
       Message(
         time: getNow(),
-        sender: 'BusyBob Odenkirk',
+        sender: 'Bob Odenkirk',
         text: 'I\'m very busy',
         // colour: Notifier.colours[1],
       ),
     ],
-    'Maybe Funke': [
+    'May Beacom': [
       Message(
         time: getNow(),
-        sender: 'Maybe Funke',
+        sender: 'May Beacom',
         text: 'I can talk.. Maybe.',
         // colour: Notifier.colours[2],
       ),
     ],
-    'Free-Frank Woodley': [
+    'Frank Woodley': [
       Message(
         time: getNow(),
-        sender: 'Free-Frank Woodley',
+        sender: 'Frank Woodley',
         text: 'Cause I\'m FREE!',
         // colour: Notifier.colours[3],
       ),
       Message(
         time: getNow(),
-        sender: 'Free-Frank Woodley',
+        sender: 'Frank Woodley',
         text: 'Call me William Wallace',
         // colour: Notifier.colours[3],
       ),
     ],
   };
   List<String> contacts = [
-    'Alice Mert-None',
-    'BusyBob Odenkirk',
-    'Maybe Funke',
-    'Free-Frank Woodley',
+    'Alice Mertone',
+    'Bob Odenkirk',
+    'May Beacom',
+    'Frank Woodley',
   ];
 
   UserDetails() {
@@ -117,7 +117,7 @@ class UserDetails with ChangeNotifier {
 }
 
 class Status {
-  static List<String> names = ['none', 'busy', 'maybe', 'free'];
+  static List<String> names = ['N/A', 'Busy', 'Maybe', 'Free'];
   static String defaultStatus = names[0];
   static List<IconData> icons = [
     Icons.circle_outlined,

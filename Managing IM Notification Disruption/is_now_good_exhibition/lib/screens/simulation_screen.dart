@@ -40,7 +40,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
   void onClickedNotification(String? payload) {
     //do something with payload.
     if (payload == "silent") {
-      Navigator.pushNamed(context, ChatScreen.id, arguments: "Alice Mert-None");
+      Navigator.pushNamed(context, ChatScreen.id, arguments: "Alice Mertone");
       return;
     }
     if (payload != null && payload != "") {
@@ -48,7 +48,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
       // Navigator.pushNamed(
       //   context,
       //   ResponseScreen.id,
-      //   arguments: 'Alice Mert-None, Where should we go for dinner?',
+      //   arguments: 'Alice Mertone, Where should we go for dinner?',
       // );
       showDialog(
         context: context,
@@ -101,7 +101,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
                           colour: Status.colours[
                               Status.names.indexOf(userDetails.status)],
                         );
-                        userDetails.sendMessage(newMessage, 'Alice Mert-None');
+                        userDetails.sendMessage(newMessage, 'Alice Mertone');
                         Navigator.pop(context);
                       },
                       child: const Text('Send'),
@@ -139,7 +139,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
                         My.Message m = My.Message(
                           text: 'Where should we go for dinner?',
                           time: getNow(),
-                          sender: 'Alice Mert-None',
+                          sender: 'Alice Mertone',
                         );
                         //['None', 'Silent', 'Normal', 'Is Now Good?'];
                         String notif =
@@ -155,20 +155,20 @@ class _SimulationScreenState extends State<SimulationScreen> {
                         } else if (notif == 'Normal') {
                           m.colour = Notifier.colours[2];
                           NotificationApi.showNotification(
-                            title: 'Alice Mert-None',
+                            title: 'Alice Mertone',
                             body: 'Where should we go for dinner?',
-                            payload: 'Alice Mert-None',
+                            payload: 'Alice Mertone',
                           );
                         } else if (notif == 'Is Now Good?') {
                           m.colour = Notifier.colours[3];
                           NotificationApi.showNotification(
                             title: 'Is Now Good?',
                             body:
-                                'Alice Mert-None wants to talk. Tap to repsond.',
-                            payload: 'Alice Mert-None',
+                                'Alice Mertone wants to talk. Tap to repsond.',
+                            payload: 'Alice Mertone',
                           );
                         }
-                        userDetails.sendMessage(m, 'Alice Mert-None');
+                        userDetails.sendMessage(m, 'Alice Mertone');
                       }
                     }),
                 Column(

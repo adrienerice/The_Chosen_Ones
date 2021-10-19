@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 
 class NotificationOptionBar extends StatefulWidget {
-  const NotificationOptionBar({Key? key}) : super(key: key);
+  const NotificationOptionBar({Key? key, this.onTappedExtra}) : super(key: key);
+  final void Function()? onTappedExtra;
 
   @override
   _NotificationOptionBarState createState() => _NotificationOptionBarState();
@@ -21,6 +22,9 @@ class _NotificationOptionBarState extends State<NotificationOptionBar> {
           setState(() {
             userDetails.updateNotifierIndex(index);
           });
+          if (widget.onTappedExtra != null) {
+            widget.onTappedExtra!();
+          }
         },
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black54,

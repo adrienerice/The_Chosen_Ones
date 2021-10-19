@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:is_now_good_exhibition/components/notification_option_bard.dart';
@@ -22,6 +23,7 @@ TODO add contact
  */
 
 class _ChatScreenState extends State<ChatScreen> {
+  bool finMessageUpdate = true;
   final messageTextController = TextEditingController();
   String messageText = "";
   //the emails of current user and user to chat with, sorted
@@ -32,7 +34,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (ModalRoute.of(context) != null) {
       contactName = ModalRoute.of(context)!.settings.arguments as String;
     } else {
-      contactName = "Alice Mert-None";
+      contactName = "Alice Mertone";
     }
 
     // contactName = _auth.
@@ -91,7 +93,31 @@ class _ChatScreenState extends State<ChatScreen> {
                 );
               },
             ),
-            NotificationOptionBar(),
+            Consumer<UserDetails>(
+              builder: (context, userDetails, child) => NotificationOptionBar(
+                onTappedExtra: () {
+                  if (!finMessageUpdate) {
+                    List<Message>? messages = userDetails.messages[contactName];
+                    if (messages == null) {
+                      return;
+                    }
+                    messages[0].colour =
+                        Notifier.colours[userDetails.notifierIndex];
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    int statusIndex = userDetails.contacts.indexOf(contactName);
+                    String contactStatus = Status.names[statusIndex];
+                    String firstName = contactName.split(" ")[0];
+                    final snackBar = makeSnackBar(
+                      userDetails,
+                      firstName,
+                      contactStatus,
+                      statusIndex,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+              ),
+            ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -116,67 +142,84 @@ class _ChatScreenState extends State<ChatScreen> {
                           'Send',
                           style: kSendButtonTextStyle,
                         ),
-                        onPressed: () {
-                          if (messageText == "") {
+                        onPressed: () async {
+                          if (messageTextController.text == "") {
                             return;
                           }
-                          showDialog(
-                            context: context,
-                            barrierDismissible:
-                                false, //User has to make a selection
-                            builder: (context) {
-                              int statusIndex =
-                                  userDetails.contacts.indexOf(contactName);
-                              String contactStatus = Status.names[statusIndex];
-                              return AlertDialog(
-                                title: Text(
-                                  '$contactName has status "$contactStatus"',
-                                  style: TextStyle(
-                                    color: Status.colours[statusIndex],
-                                  ),
-                                ),
-                                content: const Text(
-                                  'Would you like to change your notification option?',
-                                  style: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                ),
-                                actions: [
-                                  Column(
-                                    children: [
-                                      NotificationOptionBar(),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          TextButton(
-                                            onPressed: () {
-                                              //TODO Update color of message
-                                              Navigator.pop(context, 'OK');
-                                            },
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            },
-                          ).then((val) {
-                            messageTextController.clear();
-                            String now =
-                                getFormattedDateAndTime(DateTime.now())[1];
-                            userDetails.sendMessage(
-                                Message(
-                                  text: messageText,
-                                  time: now,
-                                  sender: userDetails.userFullName,
-                                  colour: Notifier
-                                      .colours[userDetails.notifierIndex],
-                                ),
-                                contactName);
-                          });
+                          // showDialog(
+                          //   context: context,
+                          //   barrierDismissible:
+                          //       false, //User has to make a selection
+                          //   builder: (context) {
+                          //     int statusIndex =
+                          //         userDetails.contacts.indexOf(contactName);
+                          //     String contactStatus = Status.names[statusIndex];
+                          //     return AlertDialog(
+                          //       title: Text(
+                          //         '$contactName has status "$contactStatus"',
+                          //         style: TextStyle(
+                          //           color: Status.colours[statusIndex],
+                          //         ),
+                          //       ),
+                          //       content: const Text(
+                          //         'Would you like to change your notification option?',
+                          //         style: TextStyle(
+                          //           fontStyle: FontStyle.italic,
+                          //         ),
+                          //       ),
+                          //       actions: [
+                          //         Column(
+                          //           children: [
+                          //             NotificationOptionBar(),
+                          //             Row(
+                          //               mainAxisAlignment:
+                          //                   MainAxisAlignment.end,
+                          //               children: [
+                          //                 TextButton(
+                          //                   onPressed: () {
+                          //                     //TODO Update color of message
+                          //                     Navigator.pop(context, 'OK');
+                          //                   },
+                          //                   child: const Text('OK'),
+                          //                 ),
+                          //               ],
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ],
+                          //     );
+                          //   },
+                          // ).then((val) {
+                          messageTextController.clear();
+                          String now =
+                              getFormattedDateAndTime(DateTime.now())[1];
+                          userDetails.sendMessage(
+                            Message(
+                              text: messageText,
+                              time: now,
+                              sender: userDetails.userFullName,
+                              colour:
+                                  Notifier.colours[userDetails.notifierIndex],
+                            ),
+                            contactName,
+                          );
+                          //THIS IS IMPORTANT
+                          finMessageUpdate = false;
+
+                          int statusIndex =
+                              userDetails.contacts.indexOf(contactName);
+                          String contactStatus = Status.names[statusIndex];
+                          String firstName = contactName.split(" ")[0];
+                          final snackBar = makeSnackBar(
+                            userDetails,
+                            firstName,
+                            contactStatus,
+                            statusIndex,
+                          );
+                          await Future.delayed(Duration(seconds: 1));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          //});
                         },
                       );
                     },
@@ -186,6 +229,60 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  SnackBar makeSnackBar(
+    UserDetails userDetails,
+    String firstName,
+    String contactStatus,
+    int statusIndex,
+  ) {
+    return SnackBar(
+      duration: const Duration(hours: 1),
+      content: RichText(
+        text: TextSpan(
+          style: TextStyle(fontSize: 16.0),
+          children: [
+            TextSpan(text: "$firstName: "),
+            TextSpan(
+              text: ' $contactStatus ',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                // fontSize: 20.0,
+                backgroundColor: Status.colours[statusIndex],
+
+                // color: Status.colours[statusIndex],
+              ),
+            ),
+            const TextSpan(
+              text: '. Change or... ',
+            ),
+            // const TextSpan(text: '.\nSending '),
+            // TextSpan(
+            //   text: Notifier
+            //       .labels[userDetails.notifierIndex],
+            //   style: TextStyle(
+            //     fontWeight: FontWeight.bold,
+            //     fontSize: 20.0,
+            //     color: Notifier
+            //         .colours[userDetails.notifierIndex],
+            //   ),
+            // ),
+            // const TextSpan(
+            //   text:
+            //       ' notification.\nChange above or confirm.',
+            // ),
+          ],
+        ),
+      ),
+      action: SnackBarAction(
+        label: "Confirm '" + Notifier.labels[userDetails.notifierIndex] + "'",
+        textColor: Notifier.colours[userDetails.notifierIndex],
+        onPressed: () {
+          finMessageUpdate = true;
+        },
       ),
     );
   }
