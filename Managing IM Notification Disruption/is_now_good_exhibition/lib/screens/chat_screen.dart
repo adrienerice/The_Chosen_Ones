@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:is_now_good_exhibition/components/notification_option_bard.dart';
+import 'package:is_now_good_exhibition/screens/contacts_screen.dart';
 import 'package:provider/provider.dart';
 import '/model/user_details.dart';
 import '/constants.dart';
@@ -30,6 +31,8 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     if (ModalRoute.of(context) != null) {
       contactName = ModalRoute.of(context)!.settings.arguments as String;
+    } else {
+      contactName = "Alice Mert-None";
     }
 
     // contactName = _auth.
@@ -43,26 +46,23 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Consumer<UserDetails>(
-              builder: (context, userDetails, child) {
-                return Expanded(
-                  child: SizedBox(
-                    height: 200.0,
-                    child: ListView(
-                      reverse: true,
-                      children: [
-                        for (var message in userDetails.messages[contactName]!)
-                          MessageBubble(
-                            sender: message.sender,
-                            text: message.text,
-                            time: message.time,
-                            isMe: (message.sender == userDetails.userFullName),
-                          ),
-                      ],
-                    ),
-                  ),
-                );
-              },
+            Expanded(
+              child: SizedBox(
+                height: 200.0,
+                child: ListView(
+                  reverse: true,
+                  children: [
+                    for (var message in Provider.of<UserDetails>(context)
+                        .messages[contactName]!)
+                      MessageBubble(
+                        message: message,
+                        isMe: (message.sender ==
+                            Provider.of<UserDetails>(context).userFullName),
+                        colour: message.colour,
+                      ),
+                  ],
+                ),
+              ),
             ),
             Consumer<UserDetails>(
               builder: (context, userDetails, child) {
@@ -112,25 +112,72 @@ class _ChatScreenState extends State<ChatScreen> {
                   Consumer<UserDetails>(
                     builder: (context, userDetails, child) {
                       return TextButton(
+                        child: const Text(
+                          'Send',
+                          style: kSendButtonTextStyle,
+                        ),
                         onPressed: () {
-                          //TODO tell user about status of recipient before send
-                          //TODO let user choose notification for recipient
-                          if (messageText != "") {
+                          if (messageText == "") {
+                            return;
+                          }
+                          showDialog(
+                            context: context,
+                            barrierDismissible:
+                                false, //User has to make a selection
+                            builder: (context) {
+                              int statusIndex =
+                                  userDetails.contacts.indexOf(contactName);
+                              String contactStatus = Status.names[statusIndex];
+                              return AlertDialog(
+                                title: Text(
+                                  '$contactName has status "$contactStatus"',
+                                  style: TextStyle(
+                                    color: Status.colours[statusIndex],
+                                  ),
+                                ),
+                                content: const Text(
+                                  'Would you like to change your notification option?',
+                                  style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                                actions: [
+                                  Column(
+                                    children: [
+                                      NotificationOptionBar(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              //TODO Update color of message
+                                              Navigator.pop(context, 'OK');
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            },
+                          ).then((val) {
                             messageTextController.clear();
                             String now =
                                 getFormattedDateAndTime(DateTime.now())[1];
                             userDetails.sendMessage(
                                 Message(
-                                    text: messageText,
-                                    time: now,
-                                    sender: userDetails.userFullName),
+                                  text: messageText,
+                                  time: now,
+                                  sender: userDetails.userFullName,
+                                  colour: Notifier
+                                      .colours[userDetails.notifierIndex],
+                                ),
                                 contactName);
-                          }
+                          });
                         },
-                        child: const Text(
-                          'Send',
-                          style: kSendButtonTextStyle,
-                        ),
                       );
                     },
                   ),
@@ -146,15 +193,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
 class MessageBubble extends StatelessWidget {
   MessageBubble({
-    required this.sender,
-    required this.text,
-    required this.time,
+    required this.message,
     required this.isMe,
+    required this.colour,
   });
-  late final String sender;
-  late final String text;
-  late final String time;
+  late final Message message;
   late final bool isMe;
+  late final Color colour;
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +210,7 @@ class MessageBubble extends StatelessWidget {
             isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
-            time,
+            message.time,
             style: TextStyle(
               fontSize: 12.0,
               color: Colors.black54,
@@ -179,14 +224,14 @@ class MessageBubble extends StatelessWidget {
               bottomLeft: Radius.circular(30.0),
               topLeft: isMe ? Radius.circular(30.0) : Radius.zero,
             ),
-            color: isMe ? Colors.green[800] : Colors.white,
+            color: colour, // isMe ? Colors.green[800] : Colors.white,
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 10.0,
                 horizontal: 20.0,
               ),
               child: Text(
-                text,
+                message.text,
                 style: TextStyle(
                   fontSize: 15.0,
                   color: isMe ? Colors.white : Colors.black87,
