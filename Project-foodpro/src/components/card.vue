@@ -8,6 +8,7 @@
                 <div :id="food.id">Expired in {{food.expired}} days</div>
             </div>
             <img class="edit" src="~assets/images/icon-card/edit.png">
+            <img class="share" src="~assets/images/icon-card/share.png">
         </div>
 
     </div>
@@ -84,6 +85,13 @@
             .edit{
                 position: absolute;
                 right: 0.5rem;
+                top: 0.5rem;
+                width: var(--img-size-sm);
+                height: var(--img-size-sm);
+            }
+            .share{
+                position: absolute;
+                right: 2.5rem;
                 top: 0.5rem;
                 width: var(--img-size-sm);
                 height: var(--img-size-sm);
