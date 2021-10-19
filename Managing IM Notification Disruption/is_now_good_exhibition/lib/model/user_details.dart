@@ -32,7 +32,7 @@ class UserDetails with ChangeNotifier {
   int minuteSpecificityMax = 30;
   int minuteSpecificityMin = 5;
   Map<String, List<Message>> messages = {
-    'Alice Mertone': [
+    'Alice Merton': [
       Message(
         time: getNow(),
         sender: 'Joe Swanson',
@@ -41,7 +41,7 @@ class UserDetails with ChangeNotifier {
       ),
       Message(
         time: getNow(),
-        sender: 'Alice Mertone',
+        sender: 'Alice Merton',
         text: 'Hi',
         // colour: Notifier.colours[0],
       ),
@@ -78,7 +78,7 @@ class UserDetails with ChangeNotifier {
     ],
   };
   List<String> contacts = [
-    'Alice Mertone',
+    'Alice Merton',
     'Bob Odenkirk',
     'May Beacom',
     'Frank Woodley',

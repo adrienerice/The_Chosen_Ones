@@ -6,12 +6,19 @@ import 'package:is_now_good_exhibition/model/notification_api.dart';
 import 'package:is_now_good_exhibition/model/user_details.dart';
 import 'package:is_now_good_exhibition/screens/chat_screen.dart';
 import 'package:is_now_good_exhibition/screens/contacts_screen.dart';
+import 'package:js/js_util.dart';
 import 'package:provider/provider.dart';
 import '../model/user_details.dart' as My;
+
+import 'package:audioplayers/audioplayers.dart';
 
 import '../constants.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+// import 'package:flutter_js/flutter_js.dart';
+// import '../js.dart' as js if (dart.library.js)  '../js_web.dart';
+import '../js_web.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -27,11 +34,16 @@ class SimulationScreen extends StatefulWidget {
 class _SimulationScreenState extends State<SimulationScreen> {
   String messageText = '';
 
+  // late JavascriptRuntime flutterJs;
+  late AudioPlayer audioPlayer;
+
   @override
   void initState() {
     super.initState();
     NotificationApi.init();
     listenNotifications();
+    // flutterJs = getJavascriptRuntime();
+    audioPlayer = AudioPlayer();
   }
 
   void listenNotifications() =>
@@ -40,7 +52,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
   void onClickedNotification(String? payload) {
     //do something with payload.
     if (payload == "silent") {
-      Navigator.pushNamed(context, ChatScreen.id, arguments: "Alice Mertone");
+      Navigator.pushNamed(context, ChatScreen.id, arguments: "Alice Merton");
       return;
     }
     if (payload != null && payload != "") {
@@ -48,7 +60,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
       // Navigator.pushNamed(
       //   context,
       //   ResponseScreen.id,
-      //   arguments: 'Alice Mertone, Where should we go for dinner?',
+      //   arguments: 'Alice Merton, Where should we go for dinner?',
       // );
       showDialog(
         context: context,
@@ -101,7 +113,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
                           colour: Status.colours[
                               Status.names.indexOf(userDetails.status)],
                         );
-                        userDetails.sendMessage(newMessage, 'Alice Mertone');
+                        userDetails.sendMessage(newMessage, 'Alice Merton');
                         Navigator.pop(context);
                       },
                       child: const Text('Send'),
@@ -130,46 +142,70 @@ class _SimulationScreenState extends State<SimulationScreen> {
               children: [
                 Container(),
                 RoundedButton(
-                    text: 'Receive message notification',
+                    text:
+                        'Receive message notification\n(Sound may take a moment to load initially)',
                     color: Notifier.colours[userDetails.notifierIndex],
-                    onPressed: () {
-                      if (kIsWeb) {
-                        // FlutterWebView
-                      } else {
-                        My.Message m = My.Message(
-                          text: 'Where should we go for dinner?',
-                          time: getNow(),
-                          sender: 'Alice Mertone',
-                        );
-                        //['None', 'Silent', 'Normal', 'Is Now Good?'];
-                        String notif =
-                            Notifier.labels[userDetails.notifierIndex];
+                    onPressed: () async {
+                      My.Message m = My.Message(
+                        text: 'Where should we go for dinner?',
+                        time: getNow(),
+                        sender: 'Alice Merton',
+                      );
+                      //['None', 'Silent', 'Normal', 'Is Now Good?'];
+                      String notif = Notifier.labels[userDetails.notifierIndex];
 
-                        if (notif == 'None') {
-                          m.colour = Notifier.colours[0];
-                          m.text = "Here's a secret message for later";
-                          //Do nothing
-                        } else if (notif == 'Silent') {
-                          m.colour = Notifier.colours[1];
+                      if (notif == 'None') {
+                        m.colour = Notifier.colours[0];
+                        m.text = "Here's a secret message for later";
+                        //Do nothing
+                      } else if (notif == 'Silent') {
+                        m.colour = Notifier.colours[1];
+                        if (kIsWeb) {
+                          // flutterJs.evaluate('Alert()');
+                          //TODO
+                          // js.evaluate('console.log("hello world!")');
+                          eval(
+                              "alert('Alice Merton: Where should we have dinner?')");
+                        } else {
                           _showNotificationWithNoSound();
-                        } else if (notif == 'Normal') {
-                          m.colour = Notifier.colours[2];
+                        }
+                      } else if (notif == 'Normal') {
+                        m.colour = Notifier.colours[2];
+                        if (kIsWeb) {
+                          // TODO
+                          // flutterJs.evaluate('Alert()');
+                          //https://freesound.org/people/PearceWilsonKing/sounds/413691/
+                          await audioPlayer.play('/sounds/alert.mp3',
+                              isLocal: true);
+                          eval('alert("Alice Merton: '
+                              'Where should we have dinner?")');
+                        } else {
                           NotificationApi.showNotification(
-                            title: 'Alice Mertone',
+                            title: 'Alice Merton',
                             body: 'Where should we go for dinner?',
-                            payload: 'Alice Mertone',
-                          );
-                        } else if (notif == 'Is Now Good?') {
-                          m.colour = Notifier.colours[3];
-                          NotificationApi.showNotification(
-                            title: 'Is Now Good?',
-                            body:
-                                'Alice Mertone wants to talk. Tap to repsond.',
-                            payload: 'Alice Mertone',
+                            payload: 'Alice Merton',
                           );
                         }
-                        userDetails.sendMessage(m, 'Alice Mertone');
+                      } else if (notif == 'Is Now Good?') {
+                        m.colour = Notifier.colours[3];
+                        if (kIsWeb) {
+                          // TODO
+                          //https://freesound.org/people/PearceWilsonKing/sounds/413691/
+                          await audioPlayer.play('/sounds/alert.mp3',
+                              isLocal: true);
+                          // await promiseToFuture(
+                          eval(
+                              'confirm("Alice Merton wants to talk. Tap to respond.")');
+                          onClickedNotification("Alice Merton");
+                        } else {
+                          NotificationApi.showNotification(
+                            title: 'Is Now Good?',
+                            body: 'Alice Merton wants to talk. Tap to repsond.',
+                            payload: 'Alice Merton',
+                          );
+                        }
                       }
+                      userDetails.sendMessage(m, 'Alice Merton');
                     }),
                 Column(
                   children: [
@@ -182,7 +218,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
                                   Notifier.colours[userDetails.notifierIndex],
                             ),
                             child: Column(
-                              children: [
+                              children: const [
                                 Text(
                                   'Notification option',
                                   textAlign: TextAlign.center,

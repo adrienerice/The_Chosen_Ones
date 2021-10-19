@@ -35,7 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (ModalRoute.of(context) != null) {
       contactName = ModalRoute.of(context)!.settings.arguments as String;
     } else {
-      contactName = "Alice Mertone";
+      contactName = "Alice Merton";
     }
 
     // contactName = _auth.
