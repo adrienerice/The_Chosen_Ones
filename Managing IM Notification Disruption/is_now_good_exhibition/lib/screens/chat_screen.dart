@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:is_now_good_exhibition/components/notification_option_bard.dart';
 import 'package:is_now_good_exhibition/screens/contacts_screen.dart';
+import 'package:is_now_good_exhibition/screens/simulation_screen.dart';
 import 'package:provider/provider.dart';
 import '/model/user_details.dart';
 import '/constants.dart';
@@ -43,6 +44,42 @@ class _ChatScreenState extends State<ChatScreen> {
         backgroundColor: Colors.green,
         leading: null,
         title: Text(contactName),
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              child: Center(
+                child: Consumer<UserDetails>(
+                  //ONEDAY figure out how to use 'child' properly
+                  builder: (context, userDetails, child) {
+                    return const Text(
+                      'Your Email Address:\nuser@name.com',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.white,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              decoration: BoxDecoration(
+                color: Colors.green,
+              ),
+            ),
+            TextButton(
+              child: ListTile(
+                leading: Icon(Icons.table_rows_outlined),
+                title: Text('View simulation page'),
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed(SimulationScreen.id);
+              },
+            ),
+          ],
+        ),
       ),
       body: SafeArea(
         child: Column(

@@ -57,42 +57,6 @@ class _ContactsScreenState extends State<ContactsScreen> {
           )
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              child: Center(
-                child: Consumer<UserDetails>(
-                  //ONEDAY figure out how to use 'child' properly
-                  builder: (context, userDetails, child) {
-                    return const Text(
-                      'Your Email Address:\nuser@name.com',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.white,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              decoration: BoxDecoration(
-                color: Colors.green,
-              ),
-            ),
-            TextButton(
-              child: ListTile(
-                leading: Icon(Icons.table_rows_outlined),
-                title: Text('View simulation page'),
-              ),
-              onPressed: () {
-                Navigator.of(context).pushNamed(SimulationScreen.id);
-              },
-            ),
-          ],
-        ),
-      ),
       body: Consumer<UserDetails>(
         builder: (context, userDetails, child) {
           return Column(

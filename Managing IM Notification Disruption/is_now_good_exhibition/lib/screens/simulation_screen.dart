@@ -81,7 +81,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
                       },
                       decoration: kMessageTextFieldDecoration.copyWith(
                           hintText:
-                              '${userDetails.userFullName.split(" ")[0]}\'s status is "${userDetails.status}"'),
+                              'Reply (tap to change): \n"${userDetails.userFullName.split(" ")[0]}\'s status is \'${userDetails.status}\'..."'),
                     ),
                   ),
                   Consumer<UserDetails>(
