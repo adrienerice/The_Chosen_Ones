@@ -280,7 +280,10 @@ class _ChatScreenState extends State<ChatScreen> {
       duration: const Duration(hours: 1),
       content: RichText(
         text: TextSpan(
-          style: TextStyle(fontSize: 16.0),
+          style: const TextStyle(
+            fontSize: 16.0,
+            color: Colors.white,
+          ),
           children: [
             TextSpan(text: "$firstName: "),
             TextSpan(
