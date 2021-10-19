@@ -39,12 +39,16 @@ class _SimulationScreenState extends State<SimulationScreen> {
 
   void onClickedNotification(String? payload) {
     //do something with payload.
-    if (payload != null) {
+    if (payload == "silent") {
+      Navigator.pushNamed(context, ChatScreen.id, arguments: "Alice Mert-None");
+      return;
+    }
+    if (payload != null && payload != "") {
       Navigator.pushNamed(context, ChatScreen.id, arguments: payload);
       // Navigator.pushNamed(
       //   context,
       //   ResponseScreen.id,
-      //   arguments: 'Alice Merton, Where should we go for dinner?',
+      //   arguments: 'Alice Mert-None, Where should we go for dinner?',
       // );
       showDialog(
         context: context,
@@ -67,27 +71,37 @@ class _SimulationScreenState extends State<SimulationScreen> {
                     child: Text('Respond:'),
                   ),
                   StatusBottomNavBar(),
-                  TextField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 5,
-                    minLines: 1,
-                    onChanged: (value) {
-                      messageText = value;
-                    },
-                    decoration: kMessageTextFieldDecoration,
+                  Consumer<UserDetails>(
+                    builder: (context, userDetails, child) => TextField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 5,
+                      minLines: 1,
+                      onChanged: (value) {
+                        messageText = value;
+                      },
+                      decoration: kMessageTextFieldDecoration.copyWith(
+                          hintText:
+                              '${userDetails.userFullName.split(" ")[0]}\'s status is "${userDetails.status}"'),
+                    ),
                   ),
                   Consumer<UserDetails>(
                     builder: (context, userDetails, child) => TextButton(
                       onPressed: () {
                         String fn = userDetails.userFullName.split(" ")[0];
                         String st = userDetails.status;
-                        String text = '$fn is $st\n"$messageText"';
+                        if (messageText.length == 0) {
+                          messageText = '$fn\'s status is "$st"';
+                        }
+                        String text =
+                            messageText; //'$fn\'s status is "$st":\n$messageText';
                         My.Message newMessage = My.Message(
                           sender: userDetails.userFullName,
                           time: getNow(),
                           text: text,
+                          colour: Status.colours[
+                              Status.names.indexOf(userDetails.status)],
                         );
-                        userDetails.sendMessage(newMessage, 'Alice Merton');
+                        userDetails.sendMessage(newMessage, 'Alice Mert-None');
                         Navigator.pop(context);
                       },
                       child: const Text('Send'),
@@ -122,26 +136,39 @@ class _SimulationScreenState extends State<SimulationScreen> {
                       if (kIsWeb) {
                         // FlutterWebView
                       } else {
+                        My.Message m = My.Message(
+                          text: 'Where should we go for dinner?',
+                          time: getNow(),
+                          sender: 'Alice Mert-None',
+                        );
                         //['None', 'Silent', 'Normal', 'Is Now Good?'];
                         String notif =
                             Notifier.labels[userDetails.notifierIndex];
+
                         if (notif == 'None') {
+                          m.colour = Notifier.colours[0];
+                          m.text = "Here's a secret message for later";
                           //Do nothing
                         } else if (notif == 'Silent') {
+                          m.colour = Notifier.colours[1];
                           _showNotificationWithNoSound();
                         } else if (notif == 'Normal') {
+                          m.colour = Notifier.colours[2];
                           NotificationApi.showNotification(
-                            title: 'Alice Merton',
-                            body: 'How was your trip yesterday?',
+                            title: 'Alice Mert-None',
+                            body: 'Where should we go for dinner?',
+                            payload: 'Alice Mert-None',
                           );
                         } else if (notif == 'Is Now Good?') {
+                          m.colour = Notifier.colours[3];
                           NotificationApi.showNotification(
-                            title: 'Alice Merton - Is Now Good?',
+                            title: 'Is Now Good?',
                             body:
-                                'here should we go for dinner?\n(TAP TO RESPOND)',
-                            payload: 'Alice Merton',
+                                'Alice Mert-None wants to talk. Tap to repsond.',
+                            payload: 'Alice Mert-None',
                           );
                         }
+                        userDetails.sendMessage(m, 'Alice Mert-None');
                       }
                     }),
                 Column(
@@ -197,5 +224,6 @@ Future<void> _showNotificationWithNoSound() async {
       iOS: iOSPlatformChannelSpecifics,
       macOS: macOSPlatformChannelSpecifics);
   await flutterLocalNotificationsPlugin.show(
-      0, '<b>silent</b> title', '<b>silent</b> body', platformChannelSpecifics);
+      0, '<b>silent</b> title', '<b>silent</b> body', platformChannelSpecifics,
+      payload: "silent");
 }

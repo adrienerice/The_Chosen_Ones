@@ -27,7 +27,7 @@ class NotificationApi {
   static Future _notificationDetails() async {
     return NotificationDetails(
       android: AndroidNotificationDetails(
-        //TODO change channel details and notification importance
+        //ONEDAY change channel details and notification importance
         'channelId',
         'channelName',
         channelDescription: 'channelDescription',
@@ -38,8 +38,7 @@ class NotificationApi {
   }
 
   static Future showNotification(
-      {int id = 0, String? title, String? body, dynamic? payload}) async {
-    // TODO muted notification option
+      {int id = 0, String? title, String? body, String? payload}) async {
     return _notifications.show(
       id,
       title,

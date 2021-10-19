@@ -137,7 +137,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                       ),
                     ),
                     Text(
-                      '${userDetails.uploaded.substring(1, userDetails.uploaded.length - 1)}',
+                      '(set at ${userDetails.uploaded.substring(1, userDetails.uploaded.length - 11)})',
                       textAlign: TextAlign.center,
                     ),
                   ],
