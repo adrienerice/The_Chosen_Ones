@@ -503,3 +503,8 @@ body{
     display: block;
     width: 75%;
 }
+
+.statistics-container img {
+    float: left;
+    width: 75%;
+}
