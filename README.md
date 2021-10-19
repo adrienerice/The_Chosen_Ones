@@ -1,13 +1,10 @@
-# The_Chosen_Ones
-Repository for all content for team members
+# The Chosen Ones
 
+**Sustainable Food Consumption - Foodpro**
 
-**Task Sheet:**
->**Readme.md**
->*This file will provide a guide to the contents of the repository, providing a hyperlinked overview for the project and structure of your documentation. This should also include instructions for how to deploy and use your prototype, including any login credentials*  
-> **Prototype**
->*Your final proof-of-concept prototypes should be accessible from the root of your repository
-with instructions for use included in the readme.md file. Any links to prototypes hosted
-elsewhere should be included here.*
-
-test
+STEPS FOR DEPLOYING PROTOTYPE:
+>* Download the folder named "Project-foodpro"
+>* Open the folder and move to the folder with terminal instructions(cd Project-foodpro)
+>* Enter【npm install】in your terminal
+>* Enter【npm run serve】in your terminal
+>* Now the website should be opened on your host, the homepage and recipe generator are accessible
