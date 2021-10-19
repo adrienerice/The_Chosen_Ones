@@ -1,0 +1,67 @@
+@import "./normalize.css";
+
+:root{
+/*colors*/
+
+    /*theme colors*/
+    --color-primary: rgb(241, 150, 70);
+    --color-success: rgb(121, 222, 156);
+    --color-warning: rgb(255, 0, 7);
+    --color-error:rgba(255,93,91,1);
+
+    /*text colors*/
+    --text-color:rgba(39,40,50,1);;
+    --text-color-inverse:#fff;
+    --text-color-grey:rgba(39,40,50,0.6);
+    --text-color-placeholder: #808080;
+    --text-color-disable:rgba(39,40,50,0.4);
+
+    /*background colors*/
+    --bg-color:#ffffff;
+    --bg-color-grey: rgb(246, 247, 249);
+    --bg-color-hover:rgba(39,40,50,0.2);
+    --bg-color-mask:rgba(0, 0, 0, 0.4);
+    --bg-yellow:#F6CA7F;
+    --bg-reg:#ED6D6A;
+    --bg-blue:#6B9BA9;
+
+    /*border colors*/
+    --border-color:rgba(39,40,50,0.1);
+
+/* sizes */
+
+    /* font size */
+    --font-size-sm:0.75rem;
+    --font-size-base:1rem;
+    --font-size-lg:1.25rem;
+
+    /* image size */
+    --img-offset:0.75rem;
+    --img-size-sm:1.5rem;
+    --img-size-base:2.9rem;
+    --img-size-lg:4.6rem;
+
+    /* Border Radius */
+    --border-radius-sm: 0.625rem;
+    --border-radius-base: 1.25rem;
+    --border-radius-lg: 2.5rem;
+    --border-radius-circle: 50%;
+}
+
+*,
+*::before,
+*::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: var(--bg-color);
+    color: var(--text-color);
+    width: 100vw;
+}
+
+a{
+    color: var(--text-color);
+}
