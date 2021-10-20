@@ -23,9 +23,11 @@ class Message {
 }
 
 class UserDetails with ChangeNotifier {
+  List<bool> contactsSentMessage = [false, false, false, false];
+  List<String> lastMessages = ['', '', '', ''];
   bool clickedNotification = false;
   int notifierIndex = Notifier.defaultLabelIndex;
-  String userFullName = 'Joe Swanson';
+  String userFullName = 'Your Name';
   String status = Status.defaultStatus;
   late String uploaded;
   //ONEDAY let users choose their 'last updated [x] mins ago specificity
@@ -84,6 +86,11 @@ class UserDetails with ChangeNotifier {
     'Frank Woodley',
   ];
 
+  void lastSentUpdate(String msg, String name) {
+    lastMessages[contacts.indexOf(name)] = msg;
+    notifyListeners();
+  }
+
   UserDetails() {
     uploaded = getFormattedDateAndTime(
       DateTime.now(),
@@ -114,20 +121,25 @@ class UserDetails with ChangeNotifier {
     notifierIndex = index;
     notifyListeners();
   }
+
+  void updateUserName(String newname) {
+    userFullName = newname;
+    notifyListeners();
+  }
 }
 
 class Status {
-  static List<String> names = ['N/A', 'Busy', 'Maybe', 'Free'];
+  static List<String> names = ['[No Status]', 'Busy', 'Semi-Busy', 'Free'];
   static String defaultStatus = names[0];
   static List<IconData> icons = [
     Icons.circle_outlined,
-    Icons.do_not_disturb_on_outlined,
+    Icons.close,
     Icons.contact_support,
     Icons.done,
   ];
   static List<Color> colours = [
     Colors.grey,
-    Colors.red,
+    Colors.red[300]!,
     Colors.orange,
     Colors.green,
   ];

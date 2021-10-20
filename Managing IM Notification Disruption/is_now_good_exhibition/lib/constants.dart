@@ -96,6 +96,7 @@ String getNow() {
 }
 
 class Notifier {
+  static List<String> notifs = ['Normal', 'Silent', 'Don\'t Notify'];
   static List<IconData> icons = [
     FontAwesomeIcons.ghost,
     Icons.volume_off,
@@ -109,5 +110,10 @@ class Notifier {
     Colors.green,
   ];
   static int defaultLabelIndex = 2;
-  static List<String> labels = ['None', 'Silent', 'Normal', 'Is Now Good?'];
+  static List<String> labels = [
+    'Invisible',
+    'Silent',
+    'Normal',
+    '"Is Now Good?"'
+  ];
 }

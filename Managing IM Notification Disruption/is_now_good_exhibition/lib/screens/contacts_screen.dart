@@ -1,14 +1,21 @@
-import 'package:flutter/material.dart';
-import 'package:is_now_good_exhibition/screens/simulation_screen.dart';
+import 'dart:convert';
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import '/constants.dart';
 import 'package:provider/provider.dart';
 
+import '/constants.dart';
+import '/model/notification_api.dart';
 import '/model/user_details.dart';
 
-import '/screens/chat_screen.dart';
-import '/screens/add_contact_screen.dart';
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+late AudioPlayer audioPlayer;
 
 class ContactsScreen extends StatefulWidget {
   ContactsScreen({Key? key}) : super(key: key);
@@ -20,45 +27,203 @@ class ContactsScreen extends StatefulWidget {
 
 class _ContactsScreenState extends State<ContactsScreen> {
   @override
+  void initState() {
+    super.initState();
+    NotificationApi.init();
+    listenNotifications();
+    audioPlayer = AudioPlayer();
+  }
+
+  void listenNotifications() =>
+      NotificationApi.onNotifications.stream.listen(onClickedNotification);
+
+  void onClickedNotification(String? payload) {
+    //TODO
+    var info = {};
+    if (payload != null) {
+      info = json.decode(payload) as Map<dynamic, dynamic>;
+    }
+    int i = 0;
+  }
+
+  Future<Map<String, dynamic>> sendIsNowGood(String name,
+      {self = false}) async {
+    /***
+                             * 
+                             * 
+                             * 
+                             * 
+                             * 
+
+
+
+
+                             
+                             */
+    Map<String, dynamic> outgoing = {};
+    outgoing["sent"] = false;
+    TextEditingController c = TextEditingController();
+    String msg = Notifier.notifs[0];
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Ask $name "Is now good?"'),
+          content: Text("Tap 'Yes' to ask $name to start a"
+              " conversation or 'No' to cancel."),
+          actions: [
+            if (!self)
+              TextField(
+                controller: c,
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter a message (optional)'),
+              ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      child: const Text('No'),
+                      onPressed: () {
+                        outgoing["sent"] = false;
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: TextButton(
+                      child: const Text('Yes'),
+                      onPressed: () {
+                        outgoing["sent"] = true;
+                        msg = c.text;
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+//TODO show snackbar "Getting $name's status"
+    await Future.delayed(Duration(seconds: 1));
+    if (outgoing["sent"]) {
+      Random rng = Random();
+      String randomStatus = Status.names[rng.nextInt(Status.names.length)];
+      String notifChosen = Notifier.notifs[0];
+      String previewSelected = "Yes";
+      await showDialog(
+        context: context,
+        builder: (context) {
+          List<String> times = [
+            "3 hours ago",
+            '5 minutes ago',
+            "1 day ago",
+            "1 hour ago",
+            "50 minutes ago",
+          ];
+          var rng = Random();
+          String time = times[rng.nextInt(times.length)];
+          if (self) {
+            String uploaded =
+                Provider.of<UserDetails>(context, listen: false).uploaded;
+            time = uploaded.substring(1, uploaded.length - 11);
+          }
+          String stat = (self)
+              ? Provider.of<UserDetails>(context, listen: false).status
+              : randomStatus;
+          return AlertDialog(
+            title: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(text: '$name was '),
+                  TextSpan(
+                    text: stat,
+                    style: TextStyle(
+                      color: Status.colours[Status.names.indexOf(stat)],
+                    ),
+                  ),
+                  TextSpan(text: ' $time'),
+                ],
+              ),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                StatefulBuilder(builder: (context, setState) {
+                  return Column(
+                    children: [
+                      Text("Send $name a notification:"),
+                      for (String notif in Notifier.notifs)
+                        RadioListTile<String>(
+                          title: Text(notif),
+                          value: notif,
+                          groupValue: notifChosen,
+                          onChanged: (var value) {
+                            setState(() => notifChosen = value!);
+                          },
+                        ),
+                      Text("Let $name preview the message?"),
+                      for (String preview in ["Yes", "No"])
+                        RadioListTile<String>(
+                          title: Text(preview),
+                          value: preview,
+                          groupValue: previewSelected,
+                          onChanged: (var value) {
+                            setState(() => previewSelected = value!);
+                          },
+                        ),
+                    ],
+                  );
+                }),
+              ],
+            ),
+            actions: [
+              TextButton(
+                child: const Text('No'),
+                onPressed: () {
+                  outgoing["sent"] = false;
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Yes'),
+                onPressed: () {
+                  outgoing["sent"] = true;
+                  outgoing["notif"] = notifChosen;
+                  outgoing["preview"] =
+                      (previewSelected == 'Yes') ? true : false;
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+          //TODO show snackbar "Is Now Good?" has been sent to $name
+        },
+      );
+    }
+    return outgoing;
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<dynamic> contactNames = [];
-    List<dynamic> chatIDs = [];
-
-    Widget addContactsHint = const Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Text(
-          'Use the plus button to add a contact',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20.0),
-        ),
-      ),
-    );
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: Consumer<UserDetails>(
           builder: (context, userDetails, child) {
-            return Text('${userDetails.userFullName}\'s Contacts');
+            return Text(userDetails.userFullName);
           },
         ),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              Navigator.pushNamed(context, AddContactScreen.id);
-              /** TODO THIS IS WHERE THE NOTIFICATION THING IS IT'S HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE LOOK HERE 
-              NotificationApi.showNotification(
-                title: 'Andrew Dwyer',
-                body: 'How was your trip yesterday?',
-                payload: 'you@you.you', //TODO add contact username here
-              );*/
-            },
-            icon: Icon(Icons.add, color: Colors.white),
-          )
-        ],
       ),
       body: Consumer<UserDetails>(
         builder: (context, userDetails, child) {
+          Provider.of<UserDetails>(context).contactsSentMessage; //NECESSARY!
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -68,22 +233,147 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     for (var contact in userDetails.contacts)
                       ListTile(
                         leading: Icon(Icons.person),
-                        /*const CircleAvatar(
+                        trailing: const CircleAvatar(
                           backgroundImage: ResizeImage(
                             AssetImage('images/logo.png'),
                             width: 40,
                             height: 40,
                           ),
-                        ),*/
+                        ),
                         title: Text(
                           contact,
+                          style: TextStyle(
+                              //make it bold if the user sent a message
+                              fontWeight: (userDetails.lastMessages[userDetails
+                                          .contacts
+                                          .indexOf(contact)] !=
+                                      "")
+                                  ? FontWeight.bold
+                                  : FontWeight.normal),
                         ),
-                        onTap: () {
-                          Navigator.pushNamed(context, ChatScreen.id,
-                              arguments: contact);
+                        subtitle: Text(userDetails.lastMessages[
+                            userDetails.contacts.indexOf(contact)]),
+                        onTap: () async {
+                          //send contact a message
+                          await sendIsNowGood(contact);
+                          //change last sent message from that contact
+                          Provider.of<UserDetails>(context, listen: false)
+                              .lastSentUpdate("", contact);
                         },
-                        // trailing: Icon(Icons.check),
                       ),
+                    ListTile(
+                      tileColor: Colors.grey[300],
+                      leading: Icon(Icons.person),
+                      trailing: const CircleAvatar(
+                        backgroundImage: ResizeImage(
+                          AssetImage('images/logo.png'),
+                          width: 40,
+                          height: 40,
+                        ),
+                      ),
+                      title: Text(
+                        userDetails.userFullName +
+                            ' (for the purpose of simulation)',
+                      ),
+                      subtitle: const Text('send yourself a message'),
+                      onTap: () async {
+                        Map<String, dynamic> incoming = await sendIsNowGood(
+                            userDetails.userFullName,
+                            self: true);
+                        if (incoming['sent'] == false) {
+                          return;
+                        }
+                        Random rng = Random();
+                        String sender = userDetails
+                            .contacts[rng.nextInt(userDetails.contacts.length)];
+                        List<String> messages = [
+                          "Are you busy? I want to call",
+                          "Let's have lunch, send me a text",
+                          "Have you seen the new Spiderman trailer? I sent you the video on WhatsApp",
+                          "How is the family?",
+                          "I miss you...",
+                          "I've got some hot gos about Bob but don't tell anyone.",
+                        ];
+                        String message = messages[rng.nextInt(messages.length)];
+
+                        String notifOption = incoming['notif'];
+                        bool preview = incoming['preview'];
+                        if (!preview) {
+                          message = '$sender wants to start a conversation.';
+                        }
+                        String title = 'Is Now Good? - $sender';
+                        /***
+                             * 
+                             * 
+                             * 
+                             * 
+                             * 
+
+
+
+
+
+                             */
+
+                        //update contacts screen
+                        //if don't notify: don't send
+                        //if on webt
+                        //    if normal, play sound
+                        //    show dialog and say it will be a notification on mobile
+                        //else
+                        //    if normal: play sound notifcaiton
+                        //    if silent play silent notificaiton
+                        //
+
+                        //TODO Update CONTACTS SCREEN WITH BOLD and USUBTITLE
+                        if (notifOption == Notifier.notifs[2]) {
+                          //Dont notify
+                          return;
+                        }
+                        if (kIsWeb) {
+                          if (notifOption == Notifier.notifs[0]) {
+                            //Normal
+                            await audioPlayer.play('/sounds/alert.mp3',
+                                isLocal: true);
+                          }
+                          await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: Text(title),
+                                    content: Text(message +
+                                        "\n(This dialog box shows as a native notification on mobile)"),
+                                  ));
+                        } else {
+                          if (notifOption == Notifier.notifs[0]) {
+                            //Normal
+                            NotificationApi.showNotification(
+                              title: title,
+                              body: message,
+                              payload: json.encode(incoming),
+                            );
+                          } else {
+                            //Silent
+                            _showNotificationWithNoSound(
+                                title, message, json.encode(incoming));
+                          }
+                        }
+                        //change last sent message from that contact
+                        Provider.of<UserDetails>(context, listen: false)
+                            .lastSentUpdate(message, sender);
+                        /***
+                             * 
+                             * 
+                             * 
+                             * 
+                             * 
+
+
+
+
+                             
+                             */
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -111,7 +401,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
           );
         },
       ),
-      bottomNavigationBar: StatusBottomNavBar(),
+      bottomNavigationBar: const StatusBottomNavBar(),
     );
   }
 }
@@ -152,4 +442,23 @@ class _StatusBottomNavBarState extends State<StatusBottomNavBar> {
       },
     );
   }
+}
+
+Future<void> _showNotificationWithNoSound(
+    String title, String body, String payload) async {
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails('silent channel id', 'silent channel name',
+          channelDescription: 'silent channel description',
+          playSound: false,
+          styleInformation: DefaultStyleInformation(true, true));
+  const IOSNotificationDetails iOSPlatformChannelSpecifics =
+      IOSNotificationDetails(presentSound: false);
+  const MacOSNotificationDetails macOSPlatformChannelSpecifics =
+      MacOSNotificationDetails(presentSound: false);
+  const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+      macOS: macOSPlatformChannelSpecifics);
+  await flutterLocalNotificationsPlugin
+      .show(0, title, body, platformChannelSpecifics, payload: payload);
 }
