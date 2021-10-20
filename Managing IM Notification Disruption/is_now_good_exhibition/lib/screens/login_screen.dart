@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 name = value;
               },
               decoration: kTextFieldDecoration.copyWith(
-                hintText: 'Enter Me Myself',
+                hintText: 'Enter your name...',
               ),
             ),
             SizedBox(
@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
               color: Colors.lightGreenAccent,
               onPressed: () {
                 if (name.length == 0) {
-                  name = "User Name";
+                  name = "Me Myself";
                 }
                 Provider.of<UserDetails>(context, listen: false)
                     .updateUserName(name);

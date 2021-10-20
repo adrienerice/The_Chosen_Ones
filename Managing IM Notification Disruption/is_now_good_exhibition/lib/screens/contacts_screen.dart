@@ -230,7 +230,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
           ? Provider.of<UserDetails>(context, listen: false).status
           : randomStatus;
       if (!self) {
-        showDialog(
+        await showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: RichText(
@@ -265,12 +265,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
         );
         final snackBar = SnackBar(
           duration: const Duration(seconds: 3),
-          content: Text('"Your response has been sent'),
+          content: Text('"Response has been sent'),
         );
-        if (self) {
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          await Future.delayed(Duration(seconds: 3));
-        }
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        await Future.delayed(Duration(seconds: 3));
       }
     }
     return outgoing;
@@ -335,13 +333,11 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                     title: Text('Reply to $contact'),
                                     content: StatusBottomNavBar(),
                                     actions: [
-                                      Expanded(
-                                        child: TextButton(
-                                          child: const Text('Send'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
+                                      TextButton(
+                                        child: const Text('Send'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
                                       ),
                                     ],
                                   );
