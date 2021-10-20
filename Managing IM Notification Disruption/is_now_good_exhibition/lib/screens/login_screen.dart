@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 name = value;
               },
               decoration: kTextFieldDecoration.copyWith(
-                hintText: 'Enter your name',
+                hintText: 'Enter Me Myself',
               ),
             ),
             SizedBox(

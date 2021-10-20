@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:provider/provider.dart';
@@ -109,42 +110,48 @@ class _ContactsScreenState extends State<ContactsScreen> {
         );
       },
     );
-//TODO show snackbar "Getting $name's status"
-    await Future.delayed(Duration(seconds: 1));
+    final snackBar = SnackBar(
+      duration: const Duration(seconds: 3),
+      content: Text('Getting $name\'s status...'),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    await Future.delayed(Duration(seconds: 3));
     if (outgoing["sent"]) {
       Random rng = Random();
       String randomStatus = Status.names[rng.nextInt(Status.names.length)];
+      String stat = (self)
+          ? Provider.of<UserDetails>(context, listen: false).status
+          : randomStatus;
       String notifChosen = Notifier.notifs[0];
       String previewSelected = "Yes";
+      List<String> times = [
+        "3 hours ago",
+        '5 minutes ago',
+        "1 day ago",
+        "1 hour ago",
+        "50 minutes ago",
+      ];
+      String time = times[rng.nextInt(times.length)];
+      if (self) {
+        String uploaded =
+            Provider.of<UserDetails>(context, listen: false).uploaded;
+        time = uploaded.substring(1, uploaded.length - 11);
+      }
       await showDialog(
         context: context,
         builder: (context) {
-          List<String> times = [
-            "3 hours ago",
-            '5 minutes ago',
-            "1 day ago",
-            "1 hour ago",
-            "50 minutes ago",
-          ];
-          var rng = Random();
-          String time = times[rng.nextInt(times.length)];
-          if (self) {
-            String uploaded =
-                Provider.of<UserDetails>(context, listen: false).uploaded;
-            time = uploaded.substring(1, uploaded.length - 11);
-          }
-          String stat = (self)
-              ? Provider.of<UserDetails>(context, listen: false).status
-              : randomStatus;
           return AlertDialog(
             title: RichText(
               text: TextSpan(
+                style: TextStyle(fontSize: 16.0),
                 children: [
                   TextSpan(text: '$name was '),
                   TextSpan(
                     text: stat,
                     style: TextStyle(
                       color: Status.colours[Status.names.indexOf(stat)],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
                     ),
                   ),
                   TextSpan(text: ' $time'),
@@ -202,9 +209,69 @@ class _ContactsScreenState extends State<ContactsScreen> {
               ),
             ],
           );
-          //TODO show snackbar "Is Now Good?" has been sent to $name
         },
       );
+      final snackBar = SnackBar(
+        duration: const Duration(seconds: 3),
+        content: Text('"Is Now Good?" has been sent to $name'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      await Future.delayed(Duration(seconds: 3));
+      final snackBar2 = SnackBar(
+        duration: const Duration(seconds: 4),
+        content: Text('[NOW WE WAIT FOR A REPSONSE...]'),
+      );
+      if (!self) {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar2);
+        await Future.delayed(Duration(seconds: 4));
+      }
+      randomStatus = Status.names[rng.nextInt(Status.names.length)];
+      stat = (self)
+          ? Provider.of<UserDetails>(context, listen: false).status
+          : randomStatus;
+      if (!self) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: RichText(
+              text: TextSpan(
+                style: TextStyle(fontSize: 16.0),
+                children: [
+                  TextSpan(text: '$name has replied: '),
+                  TextSpan(
+                    text: stat,
+                    style: TextStyle(
+                      color: Status.colours[Status.names.indexOf(stat)],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  outgoing["sent"] = true;
+                  outgoing["notif"] = notifChosen;
+                  outgoing["preview"] =
+                      (previewSelected == 'Yes') ? true : false;
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+        final snackBar = SnackBar(
+          duration: const Duration(seconds: 3),
+          content: Text('"Your response has been sent'),
+        );
+        if (self) {
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          await Future.delayed(Duration(seconds: 3));
+        }
+      }
     }
     return outgoing;
   }
@@ -254,11 +321,38 @@ class _ContactsScreenState extends State<ContactsScreen> {
                         subtitle: Text(userDetails.lastMessages[
                             userDetails.contacts.indexOf(contact)]),
                         onTap: () async {
-                          //send contact a message
-                          await sendIsNowGood(contact);
-                          //change last sent message from that contact
-                          Provider.of<UserDetails>(context, listen: false)
-                              .lastSentUpdate("", contact);
+                          var cs =
+                              Provider.of<UserDetails>(context, listen: false)
+                                  .contacts;
+                          if (Provider.of<UserDetails>(context, listen: false)
+                                  .lastMessages[cs.indexOf(contact)] !=
+                              "") {
+                            //reply to contacts message
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text('Reply to $contact'),
+                                    content: StatusBottomNavBar(),
+                                    actions: [
+                                      Expanded(
+                                        child: TextButton(
+                                          child: const Text('Send'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                });
+                            //change last sent message from that contact
+                            Provider.of<UserDetails>(context, listen: false)
+                                .lastSentUpdate("", contact);
+                          } else {
+                            //send contact a message
+                            await sendIsNowGood(contact);
+                          }
                         },
                       ),
                     ListTile(

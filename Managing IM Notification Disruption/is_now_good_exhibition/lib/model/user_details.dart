@@ -27,7 +27,7 @@ class UserDetails with ChangeNotifier {
   List<String> lastMessages = ['', '', '', ''];
   bool clickedNotification = false;
   int notifierIndex = Notifier.defaultLabelIndex;
-  String userFullName = 'Your Name';
+  String userFullName = 'Me Myself';
   String status = Status.defaultStatus;
   late String uploaded;
   //ONEDAY let users choose their 'last updated [x] mins ago specificity
@@ -130,7 +130,7 @@ class UserDetails with ChangeNotifier {
 
 class Status {
   static List<String> names = ['[No Status]', 'Busy', 'Semi-Busy', 'Free'];
-  static String defaultStatus = names[0];
+  static String defaultStatus = names[3];
   static List<IconData> icons = [
     Icons.circle_outlined,
     Icons.close,
