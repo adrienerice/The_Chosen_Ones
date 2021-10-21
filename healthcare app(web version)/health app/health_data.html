@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/public.css">
+    <title>Document</title>
+    <style>
+        .con{
+            width: 90%;
+            box-shadow: 2px 3px 11px #bfbfbf;
+            padding: 20px;
+            box-sizing: border-box;
+            margin: 30px auto;
+            border-radius: 5px;
+        }
+        .con_list{
+            display: flex;
+            margin: 10px 0;
+        }
+        .con_list_lf{
+            width: 150px;
+            text-align: right;
+            font-size: 18px;
+        }
+        .con_list_rg{
+            flex: 1;
+            font-size: 18px;
+            margin-left: 10px;
+            color: #3ca1dd;
+        }
+        .status{
+            width: 100%;
+        }
+        .s_list{
+            display: flex;
+            height: 40px;
+            line-height: 40px;
+        }
+        .s_list_lf{
+            width: 50px;
+            text-align: center;
+        }
+        .s_list_lf img{
+            width: 30px;
+            height: 30px;
+            margin-top: 5px;
+        }
+        .s_list_rg{
+            flex: 1;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="con">
+        <div class="con_list">
+            <div class="con_list_lf">
+                Heart rates:
+            </div>
+            <div class="con_list_rg" id="heart-rates"></div>
+        </div>
+        <div class="con_list">
+            <div class="con_list_lf">
+                Blood pressure:
+            </div>
+            <div class="con_list_rg" id="blood-pressure"></div>
+        </div>
+        <div class="con_list">
+            <div class="con_list_lf">
+                Blood sugar:
+            </div>
+            <div class="con_list_rg" id="blood-sugar" ></div>
+        </div>
+        <div class="con_list">
+            <div class="con_list_lf">
+                Sleeping hours:
+            </div>
+            <div class="con_list_rg">
+                6h35min
+            </div>
+        </div>
+        <div class="con_list">
+            <div class="con_list_lf">
+                Activity hours:
+            </div>
+            <div class="con_list_rg">
+                4h13min
+            </div>
+        </div>
+    </div>
+    <div class="status">
+        <div class="s_list">
+            <div class="s_list_lf">
+                <img src="images/i1.png" alt="">
+            </div>
+            <div class="s_list_rg">
+                Daily health report is autometically uploaded
+            </div>
+        </div>
+        <div class="s_list">
+            <div class="s_list_lf">
+                <a href="result.html"><img src="images/i2.png" alt=""></a>
+            </div>
+            <div class="s_list_rg">
+                Detect your symptoms of illnesses
+            </div>
+        </div>
+    </div>
+    <div class="menu">
+        <a href="">
+            <img src="images/voice.png" alt="">
+        </a>
+        <a href="javascript:history.go(-1)" id="back">
+            <img src="images/prev.png" alt="">
+        </a>
+        <a href="index.html">
+            <img src="images/home.png" alt="">
+        </a>
+        <a href="">
+            <img src="images/set.png" alt="">
+        </a>
+        <a href="emergency_call.html">
+            <img src="images/emer.png" alt="">
+        </a>
+    </div>
+</body>
+<script>
+    function init(){
+        let heartRates = randomNum(70,90);
+        let bloodPressure = randomNum(125,145)+'/'+randomNum(83,87);
+        let bloodSugar = randomNum(80,120);
+        document.getElementById('heart-rates').innerText = heartRates;
+        document.getElementById('blood-pressure').innerText = bloodPressure;
+        document.getElementById('blood-sugar').innerText = bloodSugar;
+        if(bloodSugar>99){
+            document.getElementById('blood-sugar').style.color = 'red'
+        }else{
+            document.getElementById('blood-sugar').style.color = '#3ca1dd'
+        }
+    }
+    init();
+    setInterval(function(){
+        init();
+    }, 3000);
+
+    //生成从minNum到maxNum的随机数
+    function randomNum(minNum,maxNum){ 
+        return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
+    } 
+</script>
+</html>

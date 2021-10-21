@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/public.css">
+    <title>Document</title>
+    <style>
+        body{
+            background: #f4f5f5;
+        }
+        .top{
+            width: 80%;
+            border: 2px #b5e61d solid;
+            margin: 20px auto;
+            text-align: center;
+            padding: 20px ;
+            box-sizing: border-box;
+        }
+        .top_tl{
+            font-size: 20px;
+            font-weight: bold;
+            color: #858585;
+        }
+        .top_num{
+            font-size: 80px;
+            color: #328fde;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .top_tap{
+            color: #adadad;
+        }
+        .con_bot{
+            display: flex;
+            text-align: center;
+        }
+        .con_bot>div{
+            flex: 1;
+        }
+        .con_bot>div p:first-child{
+            font-size: 32px;
+            font-weight: bold;
+        }
+        .con_bot>div p:nth-child(2){
+            color: #747474;
+        }
+        .numCol{
+            color: #f37722;
+        }
+        .timeCol{
+            color: #82ad40;
+        }
+        .poiCol{
+            color: #3f92cf;
+        }
+        .con_z{
+            width: 100%;
+            margin-top: 30px;
+        }
+        .con_z img{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="con">
+        <div class="top">
+            <div class="top_tl">
+                Today's Steps
+            </div>
+            <div class="top_num">
+                8916
+            </div>
+            <div class="top_tap">
+                Tap to shop
+            </div>
+        </div>
+        <div class="con_bot">
+            <div>
+                <p class="numCol">412</p>
+                <p>Calories</p>
+            </div>
+            <div>
+                <p class="timeCol">1h 24m</p>
+                <p>Active Time</p>
+            </div>
+            <div>
+                <p class="poiCol">4.7</p>
+                <p>Miles</p>
+            </div>
+        </div>
+        <div class="con_z">
+            <img src="images/z.png" alt="">
+        </div>
+    </div>
+    <div class="menu">
+        <a href="">
+            <img src="images/voice.png" alt="">
+        </a>
+        <a href="javascript:history.go(-1)" id="back">
+            <img src="images/prev.png" alt="">
+        </a>
+        <a href="index.html">
+            <img src="images/home.png" alt="">
+        </a>
+        <a href="">
+            <img src="images/set.png" alt="">
+        </a>
+        <a href="emergency_call.html">
+            <img src="images/emer.png" alt="">
+        </a>
+    </div>
+</body>
+</html>
