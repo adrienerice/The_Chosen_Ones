@@ -1,15 +1,10 @@
 # The_Chosen_Ones
 Repository for all content for team members
 
-This file provides a guide to the contents of this repository of The Chosen Ones group, as well as instructions for how to deploy the prototypes for each team member. There are four separate domains and prototypes of focus in this group: 
->* Household Energy Consumption (Adriene Rice)
->* Managing IM Notification Disruption (Luke Stringer)
->* Smart Home with Healthcare for the Elderly (Katrina Li)
->* Sustainable Food Consumption (Louise Dai) 
+This file provides a guide to the contents of this repository of  Smart Home with Healthcare for the Elderly, which whould provide a prototype of an APP but in website version.
 
-Each domain has an individual branch separated from the main branch of this repository so that all team members can work on and present their prototype.
- 
-**Household Energy Consumption**
->* The Documentation for the domain of Household Energy Consumption is located in the wiki within the repository, this includes all research, requirements, designs, low-fidelity prototype and high fidelity prototype. The link to the is here: https://github.com/adrienerice/The_Chosen_Ones/wiki , navigate to the problem area of Household Energy Consumption and click on the section of documentation (through clicking on the show/hide tab to display the subsections) you are interested in viewing.
+>* Click [healthcare app(web version)] and the click the only folder named[health app]
 
->* Additionally, the prototype for the domain of Household Energy Consumption can be located here: https://github.com/adrienerice/The_Chosen_Ones/tree/household_energy_consumption , download the file titled "DECO3500-App", and click on the index.html and open it in a web browswer in order to deploy the prototype, more instructions are included in the separate README.md file on this branch. 
+>* Click [index.html], which is the homepage of this prototype
+
+There are some functions, such as Regularly daily health track (i.e heart rate), Regularly daily activities track, Contact with clinicians and families, notifications, voice control, Send emergency messages to families and clinicians and so on.
