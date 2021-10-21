@@ -10,6 +10,8 @@ Sometimes, it isn't clear through a message whether someone wants to start a con
 
 I tried to solve this problem by making it clear when an instant message is supposed to be the start of a conversation and when it isn't.
 
+
+
 ## Previous Solutions/Inspiration
 MyButler
 sender-controlled notifications
