@@ -1,7 +1,13 @@
 # The_Chosen_Ones
 Repository for all content for team members
 
-This file provides a guide to the contents of this repository of The Chosen Ones group, as well as instructions for how to deploy the prototypes for each team member. There are four separate domains and prototypes of focus in this group: Household Energy Consumption, Managing IM Notification Disruption, Smart Home with Healthcare for the Elderly, and Sustainable Food Consumption. Each domain has an individual branch separated from the main branch of this repository so that all team members can work on and present their prototype.
+This file provides a guide to the contents of this repository of The Chosen Ones group, as well as instructions for how to deploy the prototypes for each team member. There are four separate domains and prototypes of focus in this group: 
+>* Household Energy Consumption (Adriene Rice)
+>* Managing IM Notification Disruption (Luke Stringer)
+>* Smart Home with Healthcare for the Elderly (Katrina Li)
+>* Sustainable Food Consumption (Louise Dai) 
+
+Each domain has an individual branch separated from the main branch of this repository so that all team members can work on and present their prototype.
  
 **Household Energy Consumption**
 >* The Documentation for the domain of Household Energy Consumption is located in the wiki within the repository, this includes all research, requirements, designs, low-fidelity prototype and high fidelity prototype. The link to the is here: https://github.com/adrienerice/The_Chosen_Ones/wiki , navigate to the problem area of Household Energy Consumption and click on the section of documentation (through clicking on the show/hide tab to display the subsections) you are interested in viewing.
