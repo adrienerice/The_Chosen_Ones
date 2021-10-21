@@ -1,7 +1,7 @@
-# The_Chosen_Ones
+# Smart Home with Healthcare for the Elderly
 Repository for all content for team members
 
-This file provides a guide to the contents of this repository of  Smart Home with Healthcare for the Elderly, which whould provide a prototype of an APP but in website version.
+This file provides a guide to the contents of this repository of Smart Home with Healthcare for the Elderly, which whould provide a prototype of an APP but in website version.
 
 >* Click [healthcare app(web version)] and the click the only folder named[health app]
 
