@@ -4,8 +4,8 @@ Repository for all content for team members
 This file provides a guide to the contents of this repository of The Chosen Ones group, as well as instructions for how to deploy the prototypes for each team member. There are four separate domains and prototypes of focus in this group: 
 >* Household Energy Consumption (Adriene Rice)
 >* Managing IM Notification Disruption (Luke Stringer)
->* Smart Home with Healthcare for the Elderly (Katrina Li)
->* Sustainable Food Consumption (Louise Dai) 
+>* Smart Home with Healthcare for the Elderly (Louise Dai)
+>* Sustainable Food Consumption (Katrina Li)
 
 Each domain has an individual branch separated from the main branch of this repository so that all team members can work on and present their prototype.
  
