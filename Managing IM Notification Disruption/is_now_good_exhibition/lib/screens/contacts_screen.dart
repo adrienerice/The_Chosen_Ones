@@ -32,7 +32,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
     super.initState();
     NotificationApi.init();
     listenNotifications();
-    audioPlayer = AudioPlayer();
+    audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
   }
 
   void listenNotifications() =>
