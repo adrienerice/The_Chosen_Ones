@@ -2,7 +2,7 @@
 
 This file provides a guide to the contents of this repository of Smart Home with Healthcare for the Elderly, which whould provide a prototype of an APP but in website version.
 
->* Click [healthcare app(web version)] and the click the only folder named[health app]
+>* Click [healthcare app(web version)] and the click folder named[health app] which is the final prototype
 
 >* Click [index.html], which is the homepage of this prototype
 
