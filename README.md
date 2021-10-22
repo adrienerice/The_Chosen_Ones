@@ -4,12 +4,12 @@
 # Structure of this branch:
 This folder tree just shows the important files and folders:
 
-Managing IM Notification Disruption/
-├─ is_now_good/
-├─ is_now_good_exhibition/
-├─ is_now_good_interim/
-├─ app-release.apk
-├─ DECO3500_2021_Poster_LukeStringer_43959280.pdf
+Managing IM Notification Disruption/  
+├─ is_now_good/  
+├─ is_now_good_exhibition/  
+├─ is_now_good_interim/  
+├─ app-release.apk  
+├─ DECO3500_2021_Poster_LukeStringer_43959280.pdf  
 
 * The app-release.apk file is for installing the interim prototype. 
 * There are three folders for prototypes. 
