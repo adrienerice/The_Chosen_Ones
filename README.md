@@ -20,7 +20,7 @@ Managing IM Notification Disruption/
 * Each project folder has a lib/ folder which contains the code for that app.
  
 # Prototype Deployment (from the code)  
-The interim prototype can be installed on android phones (emulators included) using the .apk file. The final prototype can be view at [lukestringer.github.io](https://lukestringer.github.io).
+The interim prototype can be installed on android phones (emulators included) using the .apk file or viewed at [this link](https://lukejoshuastringer.github.io/). The final prototype can be viewed at [lukestringer.github.io](https://lukestringer.github.io).
 
 Otherwise, to deploy any of the prototypes locally from the code: 
 * First [install flutter](https://flutter.dev/docs/get-started/install) (https://flutter.dev/docs/get-started/install).  
