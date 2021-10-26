@@ -1,6 +1,7 @@
 # [Click here to see the Exhibit Poster](/Managing%20IM%20Notification%20Disruption/DECO3500_2021_Poster_LukeStringer_43959280.pdf)
 # [Click here to see the Web prototype](https://lukestringer.github.io)
 # [Click here to see the interim Web prototype](https://lukejoshuastringer.github.io/)
+# [Click here to see the documentation](https://github.com/adrienerice/The_Chosen_Ones/wiki/Managing-IM-Notification-Disruption)
 
 # Structure of this branch:
 This folder tree just shows the important files and folders:
